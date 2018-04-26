@@ -11,6 +11,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.app.AlertDialog;
+import android.widget.EditText;
+import android.content.DialogInterface;
+import android.text.InputType;
 
 public class RootMenu extends AppCompatActivity {
 
@@ -36,6 +40,36 @@ public class RootMenu extends AppCompatActivity {
             public void onClick(View v) {
                 Intent goToCamera = new Intent(RootMenu.this, takePicture.class); //MediaStore.ACTION_IMAGE_CAPTURE
                 startActivity(goToCamera);
+            }
+        });
+        Button new_project = (Button) findViewById(R.id.new_project);
+        new_project.setOnClickListener(new Button.OnClickListener() {
+            private String new_name = "";
+            public void onClick(View v) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(RootMenu.this);
+                builder.setTitle("New Project");
+
+                final EditText name_input = new EditText(RootMenu.this);
+                name_input.setInputType(InputType.TYPE_CLASS_TEXT);
+                builder.setView(name_input);
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which){
+                        new_name = name_input.getText().toString();
+                        Intent projectMenu = new Intent(RootMenu.this, projectMenu.class);
+                        projectMenu.putExtra("name_of_project", new_name);
+                        RootMenu.this.startActivity(projectMenu);
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                   @Override
+                   public void onClick(DialogInterface dialog, int which){
+                       dialog.cancel();
+                   }
+                });
+                builder.show();
+
             }
         });
     }

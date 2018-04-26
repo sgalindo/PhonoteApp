@@ -23,6 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".takePicture"></activity>
+        <activity android:name=".projectMenu"></activity>
     </application>
 
 </manifest>
