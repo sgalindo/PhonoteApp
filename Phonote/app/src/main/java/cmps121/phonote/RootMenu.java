@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 public class RootMenu extends AppCompatActivity {
 
@@ -25,6 +26,16 @@ public class RootMenu extends AppCompatActivity {
                 Intent createSourceIntent = new Intent(RootMenu.this,
                         CreateSourceActivity.class);
                 startActivity(createSourceIntent);
+            }
+        });
+
+        //Click activity for camera button
+        ImageButton btnCamera =  findViewById(R.id.btnCamera);
+        btnCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent goToCamera = new Intent(RootMenu.this, takePicture.class); //MediaStore.ACTION_IMAGE_CAPTURE
+                startActivity(goToCamera);
             }
         });
 
