@@ -45,7 +45,8 @@ public class RootMenu extends AppCompatActivity {
         imgToTxt.setOnClickListener(
                 new Button.OnClickListener(){
                     public void onClick(View v){
-
+                        Intent intent = new Intent(getApplicationContext(), ImageToText.class);
+                        startActivity(intent);
                     }
                 }
         );

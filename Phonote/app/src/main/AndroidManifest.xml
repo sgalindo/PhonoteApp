@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cmps121.phonote">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
-    <uses-permission android:name="android.permission.CAMERA"></uses-permission>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -22,11 +22,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".takePicture"></activity>
+        <activity android:name=".takePicture" />
 
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
-            android:value="orc"/>
+            android:value="orc" />
+
+        <activity android:name=".ImageToText"></activity>
     </application>
 
 </manifest>
