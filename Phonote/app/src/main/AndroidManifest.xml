@@ -23,6 +23,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".takePicture"></activity>
+
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="orc"/>
     </application>
 
 </manifest>

@@ -14,6 +14,8 @@ import android.widget.ImageButton;
 
 public class RootMenu extends AppCompatActivity {
 
+    private Button imgToTxt;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +40,15 @@ public class RootMenu extends AppCompatActivity {
                 startActivity(goToCamera);
             }
         });
+
+        imgToTxt = (Button) findViewById(R.id.button_image_to_text);
+        imgToTxt.setOnClickListener(
+                new Button.OnClickListener(){
+                    public void onClick(View v){
+
+                    }
+                }
+        );
     }
 
     @Override
