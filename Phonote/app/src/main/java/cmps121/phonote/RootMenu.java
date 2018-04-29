@@ -2,6 +2,7 @@ package cmps121.phonote;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,8 @@ import android.app.AlertDialog;
 import android.widget.EditText;
 import android.content.DialogInterface;
 import android.text.InputType;
+import java.io.File;
+
 
 public class RootMenu extends AppCompatActivity {
 
@@ -24,6 +27,12 @@ public class RootMenu extends AppCompatActivity {
         setContentView(R.layout.activity_root_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        File projects = new File(getCacheDir(), "/projects");
+        boolean success = true;
+        if(!projects.exists()) {
+            success = projects.mkdirs();
+        }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -57,8 +66,10 @@ public class RootMenu extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which){
                         new_name = name_input.getText().toString();
+                        boolean projectCreated = true;
                         Intent projectMenu = new Intent(RootMenu.this, projectMenu.class);
                         projectMenu.putExtra("name_of_project", new_name);
+                        projectMenu.putExtra("projectCreated", projectCreated);
                         RootMenu.this.startActivity(projectMenu);
                     }
                 });
@@ -73,6 +84,7 @@ public class RootMenu extends AppCompatActivity {
             }
         });
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
