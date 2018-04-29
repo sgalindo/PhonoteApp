@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -44,11 +45,13 @@ public class RootMenu extends AppCompatActivity {
             success = projects.mkdirs();
         }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        Button createSourceBtn = findViewById(R.id.btn_createSource);
+        createSourceBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            public void onClick(View v) {
+                Intent createSourceIntent = new Intent(RootMenu.this,
+                        CreateSourceActivity.class);
+                startActivity(createSourceIntent);
             }
         });
 
@@ -61,6 +64,7 @@ public class RootMenu extends AppCompatActivity {
                 startActivity(goToCamera);
             }
         });
+
         Button new_project = (Button) findViewById(R.id.new_project);
         new_project.setOnClickListener(new Button.OnClickListener() {
             private String new_name = "";
@@ -103,6 +107,8 @@ public class RootMenu extends AppCompatActivity {
                 int RC_SIGN_IN = 100;
                 Intent signInIntent = mGoogleSignInClient.getSignInIntent();
                 startActivityForResult(signInIntent, RC_SIGN_IN);
+                Log.d("GOOGLE SIGN IN BUTTON", "Does it load the sign in activity?");
+
             }
         });
 
@@ -117,20 +123,18 @@ public class RootMenu extends AppCompatActivity {
         // the GoogleSignInAccount will be non-null.
         super.onStart();
 
-        Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-        if (task){
-            SignInButton signIn = findViewById(R.id.sign_in_button);
-            signIn.setVisibility(0);
-        }
-        else {
-            SignInButton signIn = findViewById(R.id.sign_in_button);
-            signIn.setVisibility(1);
-
-
-        }
+//        Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+//        if (task){
+//           SignInButton signIn = findViewById(R.id.sign_in_button);
+//            signIn.setVisibility(0);
+//        }
+//        else {
+//            SignInButton signIn = findViewById(R.id.sign_in_button);
+//            signIn.setVisibility(1);}
 
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         //updateUI(account);
+
     }
 
 
