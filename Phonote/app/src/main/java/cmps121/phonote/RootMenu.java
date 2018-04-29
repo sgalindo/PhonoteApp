@@ -19,6 +19,15 @@ import android.text.InputType;
 import java.io.File;
 
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.drive.Drive;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.tasks.Task;
+
 public class RootMenu extends AppCompatActivity {
 
     @Override
@@ -27,6 +36,7 @@ public class RootMenu extends AppCompatActivity {
         setContentView(R.layout.activity_root_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        final GoogleSignInClient mGoogleSignInClient = buildGoogleSignInClient();
 
         File projects = new File(getCacheDir(), "/projects");
         boolean success = true;
@@ -83,6 +93,44 @@ public class RootMenu extends AppCompatActivity {
 
             }
         });
+
+
+
+        SignInButton signIn = findViewById(R.id.sign_in_button);
+        signIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int RC_SIGN_IN = 100;
+                Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+                startActivityForResult(signInIntent, RC_SIGN_IN);
+            }
+        });
+
+    }
+
+
+
+
+    @Override
+    protected void onStart() {
+        // Check for existing Google Sign In account, if the user is already signed in
+        // the GoogleSignInAccount will be non-null.
+        super.onStart();
+
+        Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+        if (task){
+            SignInButton signIn = findViewById(R.id.sign_in_button);
+            signIn.setVisibility(0);
+        }
+        else {
+            SignInButton signIn = findViewById(R.id.sign_in_button);
+            signIn.setVisibility(1);
+
+
+        }
+
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        //updateUI(account);
     }
 
 
@@ -106,5 +154,13 @@ public class RootMenu extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private GoogleSignInClient buildGoogleSignInClient() {
+        GoogleSignInOptions signInOptions =
+                new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestScopes(Drive.SCOPE_FILE)
+                        .build();
+        return GoogleSignIn.getClient(this, signInOptions);
     }
 }
