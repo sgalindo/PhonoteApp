@@ -25,9 +25,6 @@
             </intent-filter>
         </activity>
 
-
-
-
         <activity
             android:name=".RootMenu"
             android:label="RootMenu"
@@ -38,11 +35,6 @@
             android:name=".CreateSourceActivity"
             android:label="@string/title_activity_create_citation"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".SourceListActivity" />
         <activity android:name=".viewSourceActivity"></activity>
