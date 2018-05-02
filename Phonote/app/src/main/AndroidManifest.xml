@@ -23,6 +23,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".takePicture"></activity>
+        <activity
+            android:name=".CreateCitationActivity"
+            android:label="@string/title_activity_create_citation"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
