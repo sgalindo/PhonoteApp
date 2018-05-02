@@ -31,6 +31,8 @@ import com.google.android.gms.tasks.Task;
 
 public class RootMenu extends AppCompatActivity {
 
+    private Button imgToTxt;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +106,15 @@ public class RootMenu extends AppCompatActivity {
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         //updateUI(account);
 
+        imgToTxt = (Button) findViewById(R.id.button_image_to_text);
+        imgToTxt.setOnClickListener(
+                new Button.OnClickListener(){
+                    public void onClick(View v){
+                        Intent intent = new Intent(getApplicationContext(), ImageToText.class);
+                        startActivity(intent);
+                    }
+                }
+        );
     }
 
 
