@@ -65,38 +65,7 @@ public class RootMenu extends AppCompatActivity {
             }
         });
 
-        Button new_project = (Button) findViewById(R.id.new_project);
-        new_project.setOnClickListener(new Button.OnClickListener() {
-            private String new_name = "";
-            public void onClick(View v) {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(RootMenu.this);
-                builder.setTitle("New Project");
-
-                final EditText name_input = new EditText(RootMenu.this);
-                name_input.setInputType(InputType.TYPE_CLASS_TEXT);
-                builder.setView(name_input);
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener(){
-                    @Override
-                    public void onClick(DialogInterface dialog, int which){
-                        new_name = name_input.getText().toString();
-                        boolean projectCreated = true;
-                        Intent projectMenu = new Intent(RootMenu.this, projectMenu.class);
-                        projectMenu.putExtra("name_of_project", new_name);
-                        projectMenu.putExtra("projectCreated", projectCreated);
-                        RootMenu.this.startActivity(projectMenu);
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                   @Override
-                   public void onClick(DialogInterface dialog, int which){
-                       dialog.cancel();
-                   }
-                });
-                builder.show();
-
-            }
-        });
 
 
 
