@@ -41,11 +41,6 @@ public class RootMenu extends AppCompatActivity {
         setSupportActionBar(toolbar);
         final GoogleSignInClient mGoogleSignInClient = buildGoogleSignInClient();
 
-        File projects = new File(getCacheDir(), "/projects");
-        boolean success = true;
-        if(!projects.exists()) {
-            success = projects.mkdirs();
-        }
 
         Button createSourceBtn = findViewById(R.id.btn_createSource);
         createSourceBtn.setOnClickListener(new View.OnClickListener() {
