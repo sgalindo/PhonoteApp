@@ -21,7 +21,7 @@ public class SourceListActivity extends AppCompatActivity {
         String[] sourceArray = new String[sourceList.size()];
         for (int i = 0; i < sourceList.size(); i++) {
             SourceData data = sourceList.get(i);
-            sourceArray[i] = data.title;
+            sourceArray[i] = data.getTitle();
         }
 
         ArrayAdapter adapter =

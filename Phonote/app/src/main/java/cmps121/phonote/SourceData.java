@@ -3,11 +3,11 @@ package cmps121.phonote;
 import java.io.Serializable;
 
 public class SourceData implements Serializable {
-    public String title;
-    public String author;
-    public String publisher;
-    public String city;
-    public String year;
+    private String title;
+    private String author;
+    private String publisher;
+    private String city;
+    private String year;
 
     public SourceData(String title, String author, String publisher,
                       String city, String year) {
@@ -16,5 +16,25 @@ public class SourceData implements Serializable {
         this.publisher = publisher;
         this.city = city;
         this.year = year;
+    }
+
+    public String getTitle() {
+        return this.title;
+    }
+
+    public String getAuthor() {
+        return this.author;
+    }
+
+    public String getPublisher() {
+        return this.publisher;
+    }
+
+    public String getCity() {
+        return this.city;
+    }
+
+    public String getYear() {
+        return this.year;
     }
 }

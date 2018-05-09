@@ -19,11 +19,11 @@ public class viewSourceActivity extends AppCompatActivity {
 
         SourceData source = (SourceData) getIntent().getSerializableExtra("source");
 
-        vTitle.setText(source.title);
-        vAuthor.setText(source.author);
-        vPublisher.setText(source.publisher);
-        vCity.setText(source.city);
-        vYear.setText(source.year);
+        vTitle.setText(source.getTitle());
+        vAuthor.setText(source.getAuthor());
+        vPublisher.setText(source.getPublisher());
+        vCity.setText(source.getCity());
+        vYear.setText(source.getYear());
 
     }
 }
