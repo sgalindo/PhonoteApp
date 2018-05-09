@@ -2,15 +2,36 @@ package cmps121.phonote;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.app.AlertDialog;
+import android.widget.EditText;
+import android.content.DialogInterface;
+import android.text.InputType;
+import java.io.File;
+
+
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.drive.Drive;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.tasks.Task;
 
 public class RootMenu extends AppCompatActivity {
+
+    private Button imgToTxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +39,8 @@ public class RootMenu extends AppCompatActivity {
         setContentView(R.layout.activity_root_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        final GoogleSignInClient mGoogleSignInClient = buildGoogleSignInClient();
+
 
         Button createSourceBtn = findViewById(R.id.btn_createSource);
         createSourceBtn.setOnClickListener(new View.OnClickListener() {
@@ -39,7 +62,56 @@ public class RootMenu extends AppCompatActivity {
             }
         });
 
+
+
+
+
+        SignInButton signIn = findViewById(R.id.sign_in_button);
+        signIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int RC_SIGN_IN = 100;
+                Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+                startActivityForResult(signInIntent, RC_SIGN_IN);
+                Log.d("GOOGLE SIGN IN BUTTON", "Does it load the sign in activity?");
+
+            }
+        });
+
     }
+
+
+
+
+    @Override
+    protected void onStart() {
+        // Check for existing Google Sign In account, if the user is already signed in
+        // the GoogleSignInAccount will be non-null.
+        super.onStart();
+
+//        Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+//        if (task){
+//           SignInButton signIn = findViewById(R.id.sign_in_button);
+//            signIn.setVisibility(0);
+//        }
+//        else {
+//            SignInButton signIn = findViewById(R.id.sign_in_button);
+//            signIn.setVisibility(1);}
+
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        //updateUI(account);
+
+        imgToTxt = (Button) findViewById(R.id.button_image_to_text);
+        imgToTxt.setOnClickListener(
+                new Button.OnClickListener(){
+                    public void onClick(View v){
+                        Intent intent = new Intent(getApplicationContext(), ImageToText.class);
+                        startActivity(intent);
+                    }
+                }
+        );
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -61,5 +133,13 @@ public class RootMenu extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private GoogleSignInClient buildGoogleSignInClient() {
+        GoogleSignInOptions signInOptions =
+                new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestScopes(Drive.SCOPE_FILE)
+                        .build();
+        return GoogleSignIn.getClient(this, signInOptions);
     }
 }
