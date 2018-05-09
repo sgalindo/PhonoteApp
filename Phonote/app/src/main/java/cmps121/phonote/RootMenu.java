@@ -1,24 +1,21 @@
 package cmps121.phonote;
 
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.app.AlertDialog;
-import android.widget.EditText;
-import android.content.DialogInterface;
-import android.text.InputType;
-import java.io.File;
-
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -26,12 +23,18 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.drive.Drive;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.tasks.Task;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class RootMenu extends AppCompatActivity {
 
     private Button imgToTxt;
+
+    private int REQ_CODE_CAMERA = 1;
+    private int REQ_CODE_CROP = 2;
+    private Uri HQimageUri = null; //needed to get high quality image instead of thumbnail
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,13 +60,13 @@ public class RootMenu extends AppCompatActivity {
         btnCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent goToCamera = new Intent(RootMenu.this, takePicture.class); //MediaStore.ACTION_IMAGE_CAPTURE
-                startActivity(goToCamera);
+
+                HQimageUri = Uri.fromFile(getOutputMediaFile());
+                Intent goToCamera = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE); //
+                //goToCamera.putExtra(MediaStore.EXTRA_OUTPUT, HQimageUri);
+                startActivityForResult(goToCamera,REQ_CODE_CAMERA);
             }
         });
-
-
-
 
 
         SignInButton signIn = findViewById(R.id.sign_in_button);
@@ -80,8 +83,55 @@ public class RootMenu extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
+        if(resultCode == Activity.RESULT_OK){
+            if(requestCode == REQ_CODE_CAMERA){ //If returning from camera
+                //Uri pic = data.getData(); //gets the picture that was returned to pass to the cropper
+                //cropImage(pic);  BROKEN FOR NOW. FIX THIS TO ALLOW CROPPING
 
+                File pictureFile = getOutputMediaFile(); //gets file location and name that the photo will be saved as
+                if (pictureFile == null) return;
+                Bitmap bitmap = (Bitmap)data.getExtras().get("data");
 
+                try {
+                    FileOutputStream fos = new FileOutputStream(pictureFile);
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                    fos.flush();
+                    fos.close();
+                }  catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            if(requestCode == REQ_CODE_CROP) {// If returning from crop
+
+            }
+        }
+    }
+
+    public void cropImage(Uri pic){
+        try {
+            //call the standard crop action intent (the user device may not support it)
+            Intent cropIntent = new Intent("com.android.camera.action.CROP");
+            //indicate image type and Uri
+            cropIntent.setDataAndType(pic, "image/*");
+            //set crop properties
+            cropIntent.putExtra("crop", "true");
+            //retrieve data on return
+            cropIntent.putExtra("return-data", true);
+            //start the activity - we handle returning in onActivityResult
+            startActivityForResult(cropIntent, REQ_CODE_CROP);
+        }
+        catch(ActivityNotFoundException anfe){
+            //display an error message
+            String errorMessage = "Whoops - your device doesn't support the crop action!";
+            Toast toast = Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT);
+            toast.show();
+        }
+    }
 
     @Override
     protected void onStart() {
@@ -142,4 +192,27 @@ public class RootMenu extends AppCompatActivity {
                         .build();
         return GoogleSignIn.getClient(this, signInOptions);
     }
+
+    //gets the media location to save photos and returns the media file that the photo will be saved ass
+    private static File getOutputMediaFile() {
+
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Phonote");
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                Log.d("Phonote", "failed to create directory");
+                return null;
+            }
+        }
+        // Create a media file name
+        String timeStamp = Long.toString (System.currentTimeMillis()/1000);
+
+        File mediaFile;
+        mediaFile = new File(mediaStorageDir.getPath() + File.separator
+                + "IMG_" + timeStamp + ".png");
+
+        return mediaFile;
+    }
+
 }
+
+

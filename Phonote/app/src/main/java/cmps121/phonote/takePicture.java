@@ -71,7 +71,7 @@ public class takePicture extends AppCompatActivity{
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Phonote");
         if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {
-                Log.d("MyCameraApp", "failed to create directory");
+                Log.d("Phonote", "failed to create directory");
                 return null;
             }
         }
