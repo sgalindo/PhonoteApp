@@ -22,6 +22,7 @@ import java.io.File;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInApi;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
@@ -80,26 +81,50 @@ public class RootMenu extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+            SignInButton signIn = findViewById(R.id.sign_in_button);
+            signIn.setVisibility(View.INVISIBLE);
+            Button signOut = findViewById(R.id.sign_out_button);
+            signOut.setVisibility(View.VISIBLE);
 
-
+    }
 
     @Override
     protected void onStart() {
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.
         super.onStart();
-
-//        Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-//        if (task){
-//           SignInButton signIn = findViewById(R.id.sign_in_button);
-//            signIn.setVisibility(0);
-//        }
-//        else {
-//            SignInButton signIn = findViewById(R.id.sign_in_button);
-//            signIn.setVisibility(1);}
+        final GoogleSignInClient mGoogleSignInClient = buildGoogleSignInClient();
 
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        //updateUI(account);
+
+        if (account != null){
+            SignInButton signIn = findViewById(R.id.sign_in_button);
+            signIn.setVisibility(View.INVISIBLE);
+            Button signOut = findViewById(R.id.sign_out_button);
+            signOut.setVisibility(View.VISIBLE);
+        }
+        else {
+            SignInButton signIn = findViewById(R.id.sign_in_button);
+            signIn.setVisibility(View.VISIBLE);
+            Button signOut = findViewById(R.id.sign_out_button);
+            signOut.setVisibility(View.INVISIBLE);
+        }
+
+        final Button signOut = findViewById(R.id.sign_out_button);
+        signOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mGoogleSignInClient.signOut();
+                SignInButton signIn = findViewById(R.id.sign_in_button);
+                signIn.setVisibility(View.VISIBLE);
+                Button signOut = findViewById(R.id.sign_out_button);
+                signOut.setVisibility(View.INVISIBLE);
+            }
+        });
+
 
         imgToTxt = (Button) findViewById(R.id.button_image_to_text);
         imgToTxt.setOnClickListener(
