@@ -2,13 +2,23 @@ package cmps121.phonote;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.app.AlertDialog;
+import android.widget.EditText;
+import android.content.DialogInterface;
+import android.text.InputType;
+import java.io.File;
+
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -22,6 +32,8 @@ import com.google.android.gms.tasks.Task;
 
 public class RootMenu extends AppCompatActivity {
 
+    private Button imgToTxt;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,14 +42,28 @@ public class RootMenu extends AppCompatActivity {
         setSupportActionBar(toolbar);
         final GoogleSignInClient mGoogleSignInClient = buildGoogleSignInClient();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+
+        Button createSourceBtn = findViewById(R.id.btn_createSource);
+        createSourceBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onClick(View v) {
+                Intent createSourceIntent = new Intent(RootMenu.this,
+                        CreateSourceActivity.class);
+                startActivity(createSourceIntent);
             }
         });
+
+        //Click activity for camera button
+        ImageButton btnCamera =  findViewById(R.id.btnCamera);
+        btnCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent goToCamera = new Intent(RootMenu.this, takePicture.class); //MediaStore.ACTION_IMAGE_CAPTURE
+                startActivity(goToCamera);
+            }
+        });
+
+
 
 
 
@@ -48,6 +74,8 @@ public class RootMenu extends AppCompatActivity {
                 int RC_SIGN_IN = 100;
                 Intent signInIntent = mGoogleSignInClient.getSignInIntent();
                 startActivityForResult(signInIntent, RC_SIGN_IN);
+                Log.d("GOOGLE SIGN IN BUTTON", "Does it load the sign in activity?");
+
             }
         });
 
@@ -56,11 +84,14 @@ public class RootMenu extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+                GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+
+        if (account != null) {
             SignInButton signIn = findViewById(R.id.sign_in_button);
             signIn.setVisibility(View.INVISIBLE);
             Button signOut = findViewById(R.id.sign_out_button);
             signOut.setVisibility(View.VISIBLE);
-
+        }
     }
 
     @Override
@@ -98,6 +129,7 @@ public class RootMenu extends AppCompatActivity {
         });
 
 
+
         imgToTxt = (Button) findViewById(R.id.button_image_to_text);
         imgToTxt.setOnClickListener(
                 new Button.OnClickListener(){
@@ -108,6 +140,7 @@ public class RootMenu extends AppCompatActivity {
                 }
         );
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
