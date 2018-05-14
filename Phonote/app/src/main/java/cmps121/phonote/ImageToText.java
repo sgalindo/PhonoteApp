@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +23,8 @@ import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
 
+import java.io.IOException;
+
 public class ImageToText extends AppCompatActivity {
 
     private ImageView imageView;
@@ -30,6 +33,7 @@ public class ImageToText extends AppCompatActivity {
     private TextView textView;
     private static final int PICK_IMAGE = 100;
     Uri imageUri;
+    private Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +58,8 @@ public class ImageToText extends AppCompatActivity {
                     public void onClick(View view){
 
                         // This creates the bitmap data that the screen uses to display an image
-                        imageView.buildDrawingCache();
-                        Bitmap bitmap = imageView.getDrawingCache();
+//                        imageView.buildDrawingCache();
+//                        Bitmap bitmap = imageView.getDrawingCache();
 
                         // This reads the text and puts it into the textView
                         TextRecognizer textRecognizer = new TextRecognizer.Builder(getApplicationContext()).build();
@@ -72,7 +76,7 @@ public class ImageToText extends AppCompatActivity {
                             }
                             textView.setText(stringBuilder.toString());
 
-                            buttonProcess.setVisibility(View.INVISIBLE);
+                            buttonProcess.setVisibility(View.GONE);
                         }
                     }
                 }
@@ -101,7 +105,13 @@ public class ImageToText extends AppCompatActivity {
         // Grabs image data from the gallery and puts it in the image view
         if(resultCode == RESULT_OK && requestCode == PICK_IMAGE){
             imageUri = data.getData();
-            imageView.setImageURI(imageUri);
+            Bitmap bitmap1 = null;
+            try{
+                bitmap1 = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+            }catch (IOException e){
+                Log.e("onActivityResult()", "couldn't create bitmap");
+            }
+            //imageView.setImageURI(imageUri);
 
             // rotate the image
 //            int orientation = getOrientation(imageUri);
@@ -110,6 +120,7 @@ public class ImageToText extends AppCompatActivity {
 //            imageView.setScaleType(ImageView.ScaleType.MATRIX);
 //            matrix.postRotate(orientation);
 //            imageView.setImageMatrix(matrix);
+            rotateImage(getOrientation(imageUri), bitmap1);
 
             // Getting rid of buttons after they have been used.
             buttonProcess.setVisibility(View.VISIBLE);
@@ -131,5 +142,28 @@ public class ImageToText extends AppCompatActivity {
             cursor.close();
         }
         return orientation;
+    }
+
+    private void rotateImage( int orientation, Bitmap bitmap1){
+        Matrix matrix = new Matrix();
+        Log.i("Orientation", ""+ orientation);
+        switch(orientation){
+            case 90:
+                matrix.setRotate(90);
+                break;
+            case 180:
+                matrix.setRotate(180);
+                break;
+            default:
+                Toast.makeText(getApplicationContext(), "No orientation change", Toast.LENGTH_SHORT).show();
+        }
+
+        Log.i("Orientation", ""+ bitmap1);
+
+        Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap1, 0, 0, bitmap1.getWidth(), bitmap1.getHeight(), matrix, true);
+        Log.i("Orientation", "after rotatedBitmap is defined");
+        imageView.setImageBitmap(rotatedBitmap);
+        bitmap = rotatedBitmap;
+        Log.i("Orientation", "Rotating");
     }
 }
