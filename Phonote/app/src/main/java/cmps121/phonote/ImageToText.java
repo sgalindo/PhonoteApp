@@ -1,9 +1,17 @@
 package cmps121.phonote;
 
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.Button;
@@ -15,11 +23,17 @@ import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
 
+import java.io.IOException;
+
 public class ImageToText extends AppCompatActivity {
 
     private ImageView imageView;
+    private Button buttonGetImage;
     private Button buttonProcess;
     private TextView textView;
+    private static final int PICK_IMAGE = 100;
+    Uri imageUri;
+    private Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,19 +41,27 @@ public class ImageToText extends AppCompatActivity {
         setContentView(R.layout.activity_image_to_text);
 
         imageView = (ImageView) findViewById(R.id.image_view_Img2Txt);
+        buttonGetImage = (Button)findViewById(R.id.button_pickImage);
         buttonProcess = (Button) findViewById(R.id.button_process);
         textView = (TextView) findViewById(R.id.textView_result_Img2Txt);
 
-        final Bitmap bitmap = BitmapFactory.decodeResource(
-                getApplicationContext().getResources(),
-                R.drawable.test_image
-        );
-        imageView.setImageBitmap(bitmap);
+        // Set bitmap image from resources
+//        final Bitmap bitmap = BitmapFactory.decodeResource(
+//                getApplicationContext().getResources(),
+//                R.drawable.test_image
+//        );
+//        imageView.setImageBitmap(bitmap);
 
         buttonProcess.setOnClickListener(
                 new View.OnClickListener(){
                     @Override
                     public void onClick(View view){
+
+                        // This creates the bitmap data that the screen uses to display an image
+//                        imageView.buildDrawingCache();
+//                        Bitmap bitmap = imageView.getDrawingCache();
+
+                        // This reads the text and puts it into the textView
                         TextRecognizer textRecognizer = new TextRecognizer.Builder(getApplicationContext()).build();
                         if(!textRecognizer.isOperational()) {
                             Toast.makeText(getApplicationContext(), "Could Not Get Text", Toast.LENGTH_SHORT).show();
@@ -53,9 +75,95 @@ public class ImageToText extends AppCompatActivity {
                                 stringBuilder.append("\n");
                             }
                             textView.setText(stringBuilder.toString());
+
+                            buttonProcess.setVisibility(View.GONE);
                         }
                     }
                 }
         );
+
+        buttonGetImage.setOnClickListener(
+                new View.OnClickListener(){
+                    @Override
+                    public void onClick(View view){
+                        // Pick an image from the phone Gallery
+                        openGallery();
+                    }
+                }
+        );
+    }
+
+    private void openGallery(){
+        Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        startActivityForResult(gallery, PICK_IMAGE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Grabs image data from the gallery and puts it in the image view
+        if(resultCode == RESULT_OK && requestCode == PICK_IMAGE){
+            imageUri = data.getData();
+            Bitmap bitmap1 = null;
+            try{
+                bitmap1 = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+            }catch (IOException e){
+                Log.e("onActivityResult()", "couldn't create bitmap");
+            }
+            //imageView.setImageURI(imageUri);
+
+            // rotate the image
+//            int orientation = getOrientation(imageUri);
+//            Log.i("ImageToText", "Rotation:"+orientation);
+//            Matrix matrix = new Matrix();
+//            imageView.setScaleType(ImageView.ScaleType.MATRIX);
+//            matrix.postRotate(orientation);
+//            imageView.setImageMatrix(matrix);
+            rotateImage(getOrientation(imageUri), bitmap1);
+
+            // Getting rid of buttons after they have been used.
+            buttonProcess.setVisibility(View.VISIBLE);
+            buttonGetImage.setVisibility(View.GONE); // You may want to set this to invisible
+        }
+    }
+
+    // Gets the rotation value of an image so you can rotate it correctly later
+    public int getOrientation(Uri selectedImage) {
+        Context context = getApplicationContext();
+        int orientation = 0;
+        final String[] projection = new String[]{MediaStore.Images.Media.ORIENTATION};
+        final Cursor cursor = context.getContentResolver().query(selectedImage, projection, null, null, null);
+        if(cursor != null) {
+            final int orientationColumnIndex = cursor.getColumnIndex(MediaStore.Images.Media.ORIENTATION);
+            if(cursor.moveToFirst()) {
+                orientation = cursor.isNull(orientationColumnIndex) ? 0 : cursor.getInt(orientationColumnIndex);
+            }
+            cursor.close();
+        }
+        return orientation;
+    }
+
+    private void rotateImage( int orientation, Bitmap bitmap1){
+        Matrix matrix = new Matrix();
+        Log.i("Orientation", ""+ orientation);
+        switch(orientation){
+            case 90:
+                matrix.setRotate(90);
+                break;
+            case 180:
+                matrix.setRotate(180);
+                break;
+            default:
+                Toast.makeText(getApplicationContext(), "No orientation change", Toast.LENGTH_SHORT).show();
+        }
+
+        Log.i("Orientation", ""+ bitmap1);
+
+        Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap1, 0, 0, bitmap1.getWidth(), bitmap1.getHeight(), matrix, true);
+        Log.i("Orientation", "after rotatedBitmap is defined");
+        imageView.setImageBitmap(rotatedBitmap);
+        bitmap = rotatedBitmap;
+        Log.i("Orientation", "Rotating");
     }
 }
