@@ -97,6 +97,7 @@ public class projectMenu extends AppCompatActivity{
                     @Override
                     public void onClick(View v) {
                         //goToRootMenuForProject.putExtra("ProjectName", name_of_project);
+                        goToRootMenuForProject.putExtra("name_of_project", name_of_project);
                         startActivity(goToRootMenuForProject);
                     }
 

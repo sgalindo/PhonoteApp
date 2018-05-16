@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -20,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.graphics.Matrix;
 
@@ -46,9 +48,11 @@ public class RootMenu extends AppCompatActivity {
     private Uri HQimageUri; //needed to get high quality image instead of thumbnail
     private File imageFile; //hol
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle bundle = getIntent().getExtras();
 
         setContentView(R.layout.content_root_menu);
 
@@ -64,6 +68,20 @@ public class RootMenu extends AppCompatActivity {
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+
+        TextView project_name = (TextView) findViewById(R.id.name_of_project);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            project_name.setTooltipText(bundle.getCharSequence("name_of_project"));
+        }
+        String name = bundle.getCharSequence("name_of_project").toString();
+        if (name.length() > 15){
+            name = name.substring(0, 13) + "...";
+        }
+
+        project_name.setText(name);
+
         setSupportActionBar(toolbar);
         final GoogleSignInClient mGoogleSignInClient = buildGoogleSignInClient();
 
