@@ -103,7 +103,7 @@ public class RootMenu extends AppCompatActivity {
             public void onClick(View v) {
                 imageFile = getOutputMediaFile();
                 HQimageUri = Uri.fromFile(imageFile);
-                Intent goToCamera = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE); //
+                Intent goToCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE); //
                 goToCamera.putExtra(MediaStore.EXTRA_OUTPUT, HQimageUri);
                 startActivityForResult(goToCamera, REQ_CODE_CAMERA);
             }
