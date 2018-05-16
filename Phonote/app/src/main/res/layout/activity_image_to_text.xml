@@ -47,6 +47,7 @@
                 android:layout_height="wrap_content"
                 android:text="NO TEXT"
                 android:textSize="12sp"
+                android:layout_margin="16dp"
                 tools:layout_editor_absoluteX="4dp"
                 tools:layout_editor_absoluteY="128dp" />
 

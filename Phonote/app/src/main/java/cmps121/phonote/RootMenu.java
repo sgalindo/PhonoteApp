@@ -67,6 +67,8 @@ public class RootMenu extends AppCompatActivity {
             }
         }
 
+        setContentView(R.layout.content_root_menu);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
 
@@ -140,8 +142,8 @@ public class RootMenu extends AppCompatActivity {
                 BitmapFactory.Options options = new BitmapFactory.Options(); //used to set bitmap options (specifically to lower image file size)
                 options.inSampleSize = 2; //reduces file size to avoid out of memory issues (power of 2. 2 = 1/2 image size, 4 = 1/4 image size
 
-                Bitmap bitmap = BitmapFactory.decodeFile(HQimageUri.getPath(),options);
-                bitmap = editImage.rotateBitmap(bitmap,90); //automatically rotates the image 90degrees as I found all images started sideways
+                Bitmap bitmap = BitmapFactory.decodeFile(HQimageUri.getPath(), options);
+                bitmap = editImage.rotateBitmap(bitmap, 90); //automatically rotates the image 90degrees as I found all images started sideways
 
                 try {
                     FileOutputStream fos = new FileOutputStream(imageFile);
@@ -149,8 +151,8 @@ public class RootMenu extends AppCompatActivity {
                     fos.flush();
                     fos.close();
                     Intent cropIntent = new Intent(RootMenu.this, editImage.class); //intent to move to the crop activity
-                    cropIntent.putExtra("image",imageFile.getAbsolutePath()); //adds the image location to be passed to the crop
-                    startActivityForResult(cropIntent,REQ_CODE_CROP);
+                    cropIntent.putExtra("image", imageFile.getAbsolutePath()); //adds the image location to be passed to the crop
+                    startActivityForResult(cropIntent, REQ_CODE_CROP);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -162,10 +164,8 @@ public class RootMenu extends AppCompatActivity {
             }
         }
     }
-
     protected void onResume() {
         super.onResume();
-
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
         if (account != null){
@@ -182,6 +182,8 @@ public class RootMenu extends AppCompatActivity {
         }
     }
 
+
+
     @Override
     protected void onStart() {
         // Check for existing Google Sign In account, if the user is already signed in
@@ -190,6 +192,7 @@ public class RootMenu extends AppCompatActivity {
         final GoogleSignInClient mGoogleSignInClient = buildGoogleSignInClient();
 
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+
 
 
         final Button signOut = findViewById(R.id.sign_out_button);
