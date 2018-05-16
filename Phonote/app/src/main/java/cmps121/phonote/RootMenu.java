@@ -37,13 +37,13 @@ public class RootMenu extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_root_menu);
+        setContentView(R.layout.content_root_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         final GoogleSignInClient mGoogleSignInClient = buildGoogleSignInClient();
 
 
-        Button createSourceBtn = findViewById(R.id.btn_createSource);
+        ImageButton createSourceBtn = findViewById(R.id._createSource);
         createSourceBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,20 +84,6 @@ public class RootMenu extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-            SignInButton signIn = findViewById(R.id.sign_in_button);
-            signIn.setVisibility(View.INVISIBLE);
-            Button signOut = findViewById(R.id.sign_out_button);
-            signOut.setVisibility(View.VISIBLE);
-
-    }
-
-    @Override
-    protected void onStart() {
-        // Check for existing Google Sign In account, if the user is already signed in
-        // the GoogleSignInAccount will be non-null.
-        super.onStart();
-        final GoogleSignInClient mGoogleSignInClient = buildGoogleSignInClient();
-
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
         if (account != null){
@@ -112,6 +98,17 @@ public class RootMenu extends AppCompatActivity {
             Button signOut = findViewById(R.id.sign_out_button);
             signOut.setVisibility(View.INVISIBLE);
         }
+    }
+
+    @Override
+    protected void onStart() {
+        // Check for existing Google Sign In account, if the user is already signed in
+        // the GoogleSignInAccount will be non-null.
+        super.onStart();
+        final GoogleSignInClient mGoogleSignInClient = buildGoogleSignInClient();
+
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+
 
         final Button signOut = findViewById(R.id.sign_out_button);
         signOut.setOnClickListener(new View.OnClickListener() {
