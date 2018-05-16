@@ -28,7 +28,7 @@ public class RootMenu extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        File projects = new File(getCacheDir(), "/projects");
+        File projects = new File(getFilesDir(), "/projects");
         boolean success = true;
         if(!projects.exists()) {
             success = projects.mkdirs();
