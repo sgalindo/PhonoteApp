@@ -14,18 +14,45 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <activity
+            android:name=".BootUpActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+
         <activity
             android:name=".RootMenu"
-            android:label="@string/app_name"
+            android:label="RootMenu"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".takePicture"></activity>
+
+        <activity
+            android:name=".CreateSourceActivity"
+            android:label="@string/title_activity_create_citation"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".SourceListActivity" />
+        <activity android:name=".ViewSourceActivity"></activity>
+       
+       <activity
+            android:name=".CreateCitationActivity"
+            android:label="@string/title_activity_create_citation"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".projectMenu"></activity>
+
+        <activity android:name=".takePicture" />
+
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="orc" />
+
+        <activity android:name=".ImageToText"></activity>
     </application>
 
 </manifest>

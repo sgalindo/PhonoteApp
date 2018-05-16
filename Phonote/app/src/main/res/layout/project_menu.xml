@@ -18,7 +18,7 @@
     </ListView>
 
     <TextView
-        android:id="@+id/projects"
+        android:id="@+id/project_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -53,6 +53,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.082" />
-
 
 </android.support.constraint.ConstraintLayout>

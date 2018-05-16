@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,9 +18,19 @@ import android.widget.EditText;
 import android.content.DialogInterface;
 import android.text.InputType;
 import java.io.File;
-
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInApi;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.drive.Drive;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.tasks.Task;
 
 public class RootMenu extends AppCompatActivity {
+
+    private Button imgToTxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,17 +39,20 @@ public class RootMenu extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         File projects = new File(getFilesDir(), "/projects");
         boolean success = true;
         if(!projects.exists()) {
             success = projects.mkdirs();
         }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        Button createSourceBtn = findViewById(R.id.btn_createSource);
+        createSourceBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            public void onClick(View v) {
+                Intent createSourceIntent = new Intent(RootMenu.this,
+                        CreateSourceActivity.class);
+                startActivity(createSourceIntent);
             }
         });
 
@@ -51,38 +65,77 @@ public class RootMenu extends AppCompatActivity {
                 startActivity(goToCamera);
             }
         });
-        Button new_project = (Button) findViewById(R.id.new_project);
-        new_project.setOnClickListener(new Button.OnClickListener() {
-            private String new_name = "";
-            public void onClick(View v) {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(RootMenu.this);
-                builder.setTitle("New Project");
 
-                final EditText name_input = new EditText(RootMenu.this);
-                name_input.setInputType(InputType.TYPE_CLASS_TEXT);
-                builder.setView(name_input);
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener(){
-                    @Override
-                    public void onClick(DialogInterface dialog, int which){
-                        new_name = name_input.getText().toString();
-                        boolean projectCreated = true;
-                        Intent projectMenu = new Intent(RootMenu.this, projectMenu.class);
-                        projectMenu.putExtra("name_of_project", new_name);
-                        projectMenu.putExtra("projectCreated", projectCreated);
-                        RootMenu.this.startActivity(projectMenu);
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                   @Override
-                   public void onClick(DialogInterface dialog, int which){
-                       dialog.cancel();
-                   }
-                });
-                builder.show();
+        SignInButton signIn = findViewById(R.id.sign_in_button);
+        final GoogleSignInClient mGoogleSignInClient = buildGoogleSignInClient();
+        signIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int RC_SIGN_IN = 100;
+                Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+                startActivityForResult(signInIntent, RC_SIGN_IN);
+                Log.d("GOOGLE SIGN IN BUTTON", "Does it load the sign in activity?");
 
             }
         });
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+            SignInButton signIn = findViewById(R.id.sign_in_button);
+            signIn.setVisibility(View.INVISIBLE);
+            Button signOut = findViewById(R.id.sign_out_button);
+            signOut.setVisibility(View.VISIBLE);
+
+    }
+
+    @Override
+    protected void onStart() {
+        // Check for existing Google Sign In account, if the user is already signed in
+        // the GoogleSignInAccount will be non-null.
+        super.onStart();
+        final GoogleSignInClient mGoogleSignInClient = buildGoogleSignInClient();
+
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+
+        if (account != null){
+            SignInButton signIn = findViewById(R.id.sign_in_button);
+            signIn.setVisibility(View.INVISIBLE);
+            Button signOut = findViewById(R.id.sign_out_button);
+            signOut.setVisibility(View.VISIBLE);
+        }
+        else {
+            SignInButton signIn = findViewById(R.id.sign_in_button);
+            signIn.setVisibility(View.VISIBLE);
+            Button signOut = findViewById(R.id.sign_out_button);
+            signOut.setVisibility(View.INVISIBLE);
+        }
+
+        final Button signOut = findViewById(R.id.sign_out_button);
+        signOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mGoogleSignInClient.signOut();
+                SignInButton signIn = findViewById(R.id.sign_in_button);
+                signIn.setVisibility(View.VISIBLE);
+                Button signOut = findViewById(R.id.sign_out_button);
+                signOut.setVisibility(View.INVISIBLE);
+            }
+        });
+
+
+        imgToTxt = (Button) findViewById(R.id.button_image_to_text);
+        imgToTxt.setOnClickListener(
+                new Button.OnClickListener(){
+                    public void onClick(View v){
+                        Intent intent = new Intent(getApplicationContext(), ImageToText.class);
+                        startActivity(intent);
+                    }
+                }
+        );
     }
 
 
@@ -107,4 +160,14 @@ public class RootMenu extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
+    private GoogleSignInClient buildGoogleSignInClient() {
+        GoogleSignInOptions signInOptions =
+                new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestScopes(Drive.SCOPE_FILE)
+                        .build();
+        return GoogleSignIn.getClient(this, signInOptions);
+    }
+
 }
