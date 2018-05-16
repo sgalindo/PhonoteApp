@@ -32,7 +32,7 @@ import com.google.android.gms.tasks.Task;
 
 public class RootMenu extends AppCompatActivity {
 
-    private Button imgToTxt;
+    private ImageButton imgToTxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,7 +123,7 @@ public class RootMenu extends AppCompatActivity {
         });
 
 
-        imgToTxt = (Button) findViewById(R.id.button_image_to_text);
+        imgToTxt = (ImageButton) findViewById(R.id.button_image_to_text);
         imgToTxt.setOnClickListener(
                 new Button.OnClickListener(){
                     public void onClick(View v){
