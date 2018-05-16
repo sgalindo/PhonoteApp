@@ -39,7 +39,7 @@ import java.lang.reflect.Method;
 
 public class RootMenu extends AppCompatActivity {
 
-    private Button imgToTxt;
+    private ImageButton imgToTxt;
 
     private int REQ_CODE_CAMERA = 1;
     private int REQ_CODE_CROP = 2;
@@ -49,7 +49,8 @@ public class RootMenu extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_root_menu);
+
+        setContentView(R.layout.content_root_menu);
 
         //Cheeky fix needed to avoid Uri crashes.
         //Disables the check for security risk if other apps can access the Uri. we don't care if this happens
@@ -67,7 +68,7 @@ public class RootMenu extends AppCompatActivity {
         final GoogleSignInClient mGoogleSignInClient = buildGoogleSignInClient();
 
 
-        Button createSourceBtn = findViewById(R.id.btn_createSource);
+        ImageButton createSourceBtn = findViewById(R.id._createSource);
         createSourceBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,10 +147,21 @@ public class RootMenu extends AppCompatActivity {
 
     protected void onResume() {
         super.onResume();
-        SignInButton signIn = findViewById(R.id.sign_in_button);
-        signIn.setVisibility(View.INVISIBLE);
-        Button signOut = findViewById(R.id.sign_out_button);
-        signOut.setVisibility(View.VISIBLE);
+
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+
+        if (account != null){
+            SignInButton signIn = findViewById(R.id.sign_in_button);
+            signIn.setVisibility(View.INVISIBLE);
+            Button signOut = findViewById(R.id.sign_out_button);
+            signOut.setVisibility(View.VISIBLE);
+        }
+        else {
+            SignInButton signIn = findViewById(R.id.sign_in_button);
+            signIn.setVisibility(View.VISIBLE);
+            Button signOut = findViewById(R.id.sign_out_button);
+            signOut.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -161,17 +173,6 @@ public class RootMenu extends AppCompatActivity {
 
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
-        if (account != null) {
-            SignInButton signIn = findViewById(R.id.sign_in_button);
-            signIn.setVisibility(View.INVISIBLE);
-            Button signOut = findViewById(R.id.sign_out_button);
-            signOut.setVisibility(View.VISIBLE);
-        } else {
-            SignInButton signIn = findViewById(R.id.sign_in_button);
-            signIn.setVisibility(View.VISIBLE);
-            Button signOut = findViewById(R.id.sign_out_button);
-            signOut.setVisibility(View.INVISIBLE);
-        }
 
         final Button signOut = findViewById(R.id.sign_out_button);
         signOut.setOnClickListener(new View.OnClickListener() {
@@ -186,7 +187,7 @@ public class RootMenu extends AppCompatActivity {
         });
 
 
-        imgToTxt = (Button) findViewById(R.id.button_image_to_text);
+        imgToTxt = (ImageButton) findViewById(R.id.button_image_to_text);
         imgToTxt.setOnClickListener(
                 new Button.OnClickListener() {
                     public void onClick(View v) {
