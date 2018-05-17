@@ -71,7 +71,7 @@
         android:layout_marginLeft="84dp"
         android:layout_marginStart="84dp"
         android:ems="10"
-        android:inputType="textPersonName"
+        android:inputType="textPersonName|textCapWords"
         app:layout_constraintBottom_toTopOf="@+id/editText_Year"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText_Publisher" />
@@ -95,7 +95,7 @@
         android:layout_marginLeft="84dp"
         android:layout_marginStart="84dp"
         android:ems="10"
-        android:inputType="textPersonName"
+        android:inputType="textPersonName|textCapWords"
         app:layout_constraintBottom_toTopOf="@+id/editText_Publisher"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText_Title" />
@@ -107,7 +107,7 @@
         android:layout_marginLeft="84dp"
         android:layout_marginStart="84dp"
         android:ems="10"
-        android:inputType="textPersonName"
+        android:inputType="textCapSentences"
         app:layout_constraintBottom_toTopOf="@+id/editText_City"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText_Author" />
@@ -119,7 +119,7 @@
         android:layout_marginLeft="84dp"
         android:layout_marginStart="84dp"
         android:ems="10"
-        android:inputType="textPersonName"
+        android:inputType="textCapSentences"
         app:layout_constraintBottom_toTopOf="@+id/editText_Author"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

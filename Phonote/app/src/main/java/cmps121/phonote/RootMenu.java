@@ -88,13 +88,13 @@ public class RootMenu extends AppCompatActivity {
         final GoogleSignInClient mGoogleSignInClient = buildGoogleSignInClient();
 
 
-        ImageButton createSourceBtn = findViewById(R.id._createSource);
-        createSourceBtn.setOnClickListener(new View.OnClickListener() {
+        ImageButton sourceListBtn = findViewById(R.id._createSource);
+        sourceListBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent createSourceIntent = new Intent(RootMenu.this,
-                        CreateSourceActivity.class);
-                startActivity(createSourceIntent);
+                Intent sourceListIntent = new Intent(RootMenu.this,
+                        SourceListActivity.class);
+                startActivity(sourceListIntent);
             }
         });
 
