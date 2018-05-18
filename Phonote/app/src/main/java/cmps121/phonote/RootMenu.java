@@ -78,8 +78,8 @@ public class RootMenu extends AppCompatActivity {
             project_name.setTooltipText(bundle.getCharSequence("name_of_project"));
         }
         String name = bundle.getCharSequence("name_of_project").toString();
-        if (name.length() > 15){
-            name = name.substring(0, 13) + "...";
+        if (name.length() > 13){
+            name = name.substring(0, 11) + "...";
         }
 
         project_name.setText(name);
@@ -95,6 +95,14 @@ public class RootMenu extends AppCompatActivity {
                 Intent sourceListIntent = new Intent(RootMenu.this,
                         SourceListActivity.class);
                 startActivity(sourceListIntent);
+            }
+        });
+
+        ImageButton returnToProjects = findViewById(R.id.go_to_projects);
+        returnToProjects.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
 
