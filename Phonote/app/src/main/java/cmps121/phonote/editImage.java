@@ -58,7 +58,8 @@ public class editImage extends AppCompatActivity {
 
         Intent intentRoot = new Intent(this,RootMenu.class);
         Toast.makeText(this, "Image Saved =)", Toast.LENGTH_LONG).show();
-        startActivity(intentRoot);
+        //startActivity(intentRoot);
+        finish();
     }
 
     public static Bitmap rotateBitmap(Bitmap source, float angle)

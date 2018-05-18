@@ -103,8 +103,8 @@ public class RootMenu extends AppCompatActivity {
         btnCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imageFile = getOutputMediaFile();
-                HQimageUri = Uri.fromFile(imageFile);
+                imageFile = getOutputMediaFile(); //gets image file location to save pic at
+                HQimageUri = Uri.fromFile(imageFile); //gets Uri from image file to save HQ image
                 Intent goToCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE); //
                 goToCamera.putExtra(MediaStore.EXTRA_OUTPUT, HQimageUri);
                 startActivityForResult(goToCamera, REQ_CODE_CAMERA);
