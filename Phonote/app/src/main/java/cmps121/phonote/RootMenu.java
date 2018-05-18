@@ -77,7 +77,7 @@ public class RootMenu extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             project_name.setTooltipText(bundle.getCharSequence("name_of_project"));
         }
-        String name = bundle.getCharSequence("name_of_project").toString();
+        String name = bundle.getString("name");
         if (name.length() > 15){
             name = name.substring(0, 13) + "...";
         }
