@@ -104,17 +104,17 @@ public class projectMenu extends AppCompatActivity{
 
                 });
             }
-    }
-    }
-    //https://stackoverflow.com/questions/9530921/list-all-the-files-from-all-the-folder-in-a-single-list
-    private List<File> getListFiles(File parentDir){
-        ArrayList<File> inFiles= new ArrayList<File>();
-        File[] files = parentDir.listFiles();
-        for (File file : files){
-            if (file.isDirectory()){
-                inFiles.add(file);
-            }
         }
-        return inFiles;
     }
+//    //https://stackoverflow.com/questions/9530921/list-all-the-files-from-all-the-folder-in-a-single-list
+//    private List<File> getListFiles(File parentDir){
+//        ArrayList<File> inFiles= new ArrayList<File>();
+//        File[] files = parentDir.listFiles();
+//        for (File file : files){
+//            if (file.isDirectory()){
+//                inFiles.add(file);
+//            }
+//        }
+//        return inFiles;
+//    }
 }
