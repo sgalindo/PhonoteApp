@@ -8,6 +8,17 @@
     tools:context=".RootMenu">
 
     <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="139dp"
+        android:layout_marginStart="139dp"
+        android:text="Projects"
+        android:textColor="@android:color/black"
+        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/go_to_projects" />
+
+    <TextView
         android:id="@+id/name_of_project"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -111,6 +122,18 @@
         android:src="@drawable/picture_to_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <ImageButton
+        android:id="@+id/go_to_projects"
+        android:layout_width="130dp"
+        android:layout_height="111dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginTop="32dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/projects"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_in_button" />
 
     <TextView
         android:id="@+id/textView3"

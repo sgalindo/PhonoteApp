@@ -23,6 +23,9 @@ import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 
 public class ImageToText extends AppCompatActivity {
@@ -75,6 +78,14 @@ public class ImageToText extends AppCompatActivity {
                                 stringBuilder.append("\n");
                             }
                             textView.setText(stringBuilder.toString());
+
+                            JSONObject jo = new JSONObject();
+                            try {
+                                jo.put("title", stringBuilder.toString());
+                            } catch (JSONException e) {
+                                Log.e("ImageToText", "JSONException: Couldn't convert" +
+                                        " text to JSONObject");
+                            }
 
                             buttonProcess.setVisibility(View.GONE);
                         }

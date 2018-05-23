@@ -98,6 +98,14 @@ public class RootMenu extends AppCompatActivity {
             }
         });
 
+        ImageButton returnToProjects = findViewById(R.id.go_to_projects);
+        returnToProjects.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         //Click activity for camera button
         ImageButton btnCamera = findViewById(R.id.btnCamera);
         btnCamera.setOnClickListener(new View.OnClickListener() {
