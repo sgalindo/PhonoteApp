@@ -40,9 +40,13 @@ public class SourceListActivity extends AppCompatActivity {
         TextView text = findViewById(R.id.textView_empty);
         text.setVisibility(View.INVISIBLE);
 
+        Bundle bundle = getIntent().getExtras();
+        String name = bundle.getString("name");
+        final String rootPath = getFilesDir().getAbsolutePath() + "/projects/" + name + "/sources/";
+
         jo = null;
         try {
-            File f = new File(getFilesDir(), "sources.ser");
+            File f = new File(rootPath + "sources.ser");
             FileInputStream fi = new FileInputStream(f);
             ObjectInputStream o = new ObjectInputStream(fi);
             String jsonString = null;
@@ -125,8 +129,11 @@ public class SourceListActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case R.id.action_add_source:
-                Intent i = new Intent(this, CreateSourceActivity.class);
-                startActivity(i);
+                Intent createSourceIntent = new Intent(this, CreateSourceActivity.class);
+                Bundle bundle = getIntent().getExtras();
+                String name = bundle.getString("name");
+                createSourceIntent.putExtra("name", name);
+                startActivity(createSourceIntent);
             default:
                 super.onOptionsItemSelected(item);
         }

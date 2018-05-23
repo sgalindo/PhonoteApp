@@ -1,6 +1,7 @@
 package cmps121.phonote;
 
 import android.app.AlertDialog;
+import android.os.Environment;
 import android.util.Log;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -42,7 +43,7 @@ public class projectMenu extends AppCompatActivity{
         super.onResume();
         ArrayAdapter<String> arrayAdapter;
         final Intent goToRootMenuForProject = new Intent(this, RootMenu.class);
-        File projects = new File(getFilesDir(), "/projects");
+        File projects = new File(getFilesDir(), "projects");
         boolean success = true;
         if(!projects.exists()) {
             success = projects.mkdirs();
@@ -175,14 +176,17 @@ public class projectMenu extends AppCompatActivity{
                             Log.d(TAG, "writing to object");
                             object_out.close();
                             file_out.close();
-                            File new_file = new File("/projects", "/" + new_name);
+                            String rootPath = getFilesDir().getAbsolutePath() + "/projects/";
+                            File new_file = new File(rootPath + new_name);
                             boolean success = true;
                             if(!new_file.exists()){
                                 success = new_file.mkdirs();
-                                File citations = new File("/"+ new_name, "/citations");
+                                File citations = new File(rootPath + new_name + "/citations");
                                 citations.mkdirs();
-                                File notes = new File ("/" + new_name, "/notes");
+                                File notes = new File (rootPath + new_name + "/notes");
                                 notes.mkdirs();
+                                File sources = new File (rootPath + new_name + "/sources");
+                                sources.mkdirs();
                             }
 
                         }

@@ -32,12 +32,16 @@ public class CreateSourceActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        Bundle bundle = getIntent().getExtras();
+        final String name = bundle.getString("name");
+
         final ArrayList<SourceData> sourceList = new ArrayList<>();
 
         Button saveBtn = findViewById(R.id.btn_Save);
 
+        final String rootPath = getFilesDir().getAbsolutePath() + "/projects/" + name + "/sources/";
         try {
-            File f = new File(getFilesDir(), "sources.ser");
+            File f = new File(rootPath + "sources.ser");
             FileInputStream fi = new FileInputStream(f);
             ObjectInputStream o = new ObjectInputStream(fi);
             String jsonString = null;
@@ -73,7 +77,7 @@ public class CreateSourceActivity extends AppCompatActivity {
                 jsonArray.put(newSource);
 
                 try {
-                    File f = new File(getFilesDir(), "sources.ser");
+                    File f = new File(rootPath + "sources.ser");
                     FileOutputStream fo = new FileOutputStream(f);
                     ObjectOutputStream o = new ObjectOutputStream(fo);
                     String j = jo.toString();
@@ -87,6 +91,7 @@ public class CreateSourceActivity extends AppCompatActivity {
 
                 Intent sourceListIntent = new Intent(CreateSourceActivity.this, SourceListActivity.class);
                 sourceListIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                sourceListIntent.putExtra("name", name);
                 startActivity(sourceListIntent);
             }
         });

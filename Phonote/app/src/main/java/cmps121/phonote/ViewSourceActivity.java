@@ -27,6 +27,9 @@ public class ViewSourceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_source);
 
+        Bundle bundle = getIntent().getExtras();
+        final String name = bundle.getString("name");
+        final String rootPath = getFilesDir().getAbsolutePath() + "/projects/" + name + "/sources/";
         Intent i = getIntent();
 
         final int position = i.getIntExtra("pos", -1);
@@ -56,7 +59,7 @@ public class ViewSourceActivity extends AppCompatActivity {
                 JSONArray jsonArray = null;
                 JSONObject jo = null;
                 try {
-                    File f = new File(getFilesDir(), "sources.ser");
+                    File f = new File(rootPath + "sources.ser");
                     FileInputStream fi = new FileInputStream(f);
                     ObjectInputStream o = new ObjectInputStream(fi);
                     String jsonString = null;
@@ -93,7 +96,7 @@ public class ViewSourceActivity extends AppCompatActivity {
                 }
 
                 try {
-                    File f = new File(getFilesDir(), "sources.ser");
+                    File f = new File(rootPath + "sources.ser");
                     FileOutputStream fo = new FileOutputStream(f);
                     ObjectOutputStream o = new ObjectOutputStream(fo);
                     String j = jo.toString();
@@ -107,6 +110,7 @@ public class ViewSourceActivity extends AppCompatActivity {
 
                 Intent in = new Intent(ViewSourceActivity.this, SourceListActivity.class);
                 in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                in.putExtra("name", name);
                 startActivity(in);
             }
         });
