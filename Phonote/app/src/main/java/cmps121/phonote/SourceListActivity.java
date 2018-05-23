@@ -113,7 +113,7 @@ public class SourceListActivity extends AppCompatActivity {
             listView.setEnabled(false);
             listView.setVisibility(View.INVISIBLE);
 
-            text.setVisibility(View.INVISIBLE);
+            text.setVisibility(View.VISIBLE);
         }
     }
 
