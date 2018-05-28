@@ -120,6 +120,17 @@ public class RootMenu extends AppCompatActivity {
             }
         });
 
+        imgToTxt = (ImageButton) findViewById(R.id.button_image_to_text);
+        imgToTxt.setOnClickListener(
+                new Button.OnClickListener() {
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getApplicationContext(), ImageToText.class);
+                        intent.putExtra("name", finalName);
+                        startActivity(intent);
+                    }
+                }
+        );
+
 
         SignInButton signIn = findViewById(R.id.sign_in_button);
         signIn.setOnClickListener(new View.OnClickListener() {
@@ -215,17 +226,6 @@ public class RootMenu extends AppCompatActivity {
                 signOut.setVisibility(View.INVISIBLE);
             }
         });
-
-
-        imgToTxt = (ImageButton) findViewById(R.id.button_image_to_text);
-        imgToTxt.setOnClickListener(
-                new Button.OnClickListener() {
-                    public void onClick(View v) {
-                        Intent intent = new Intent(getApplicationContext(), ImageToText.class);
-                        startActivity(intent);
-                    }
-                }
-        );
     }
 
 
