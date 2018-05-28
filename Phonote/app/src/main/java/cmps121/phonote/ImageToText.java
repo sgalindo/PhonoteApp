@@ -1,6 +1,8 @@
 package cmps121.phonote;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -11,10 +13,12 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,10 +27,16 @@ import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 public class ImageToText extends AppCompatActivity {
 
@@ -37,6 +47,9 @@ public class ImageToText extends AppCompatActivity {
     private static final int PICK_IMAGE = 100;
     Uri imageUri;
     private Bitmap bitmap;
+
+    public JSONObject jo = null;
+    public JSONArray jsonArray = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +67,45 @@ public class ImageToText extends AppCompatActivity {
 //                R.drawable.test_image
 //        );
 //        imageView.setImageBitmap(bitmap);
+
+        // Find File Path
+        Bundle bundle = getIntent().getExtras();
+        final String name = bundle.getString("name");
+        final String rootPath = getFilesDir().getAbsolutePath() + "/projects/" + name + "/notes/";
+
+        // Open file imageNotes.ser . If no file exists create one
+        try {
+            File f = new File(rootPath + "imageNotes.ser");
+            FileInputStream fi = new FileInputStream(f);
+            ObjectInputStream o = new ObjectInputStream(fi);
+            String jsonString = null;
+            try {
+                jsonString = (String) o.readObject();
+            }
+            catch (ClassNotFoundException c) {
+                c.printStackTrace();
+            }
+            try {
+                jo = new JSONObject(jsonString);
+                jsonArray = jo.getJSONArray("data");
+            }
+            catch (JSONException je){
+                Log.e("ImageToText:", "Couldn't read JsonString");
+                je.printStackTrace();
+            }
+        }
+        catch (IOException e) {
+            // file doesn't exit yet create new JsonObject
+            jo = new JSONObject();
+            jsonArray = new JSONArray();
+            try {
+                jo.put("data", jsonArray);
+                Log.i("ImageToText: ", "File Doesn't Exit, Creating JSONObject");
+            }
+            catch (JSONException je) {
+                je.printStackTrace();
+            }
+        }
 
         buttonProcess.setOnClickListener(
                 new View.OnClickListener(){
@@ -79,13 +131,35 @@ public class ImageToText extends AppCompatActivity {
                             }
                             textView.setText(stringBuilder.toString());
 
-                            JSONObject jo = new JSONObject();
-                            try {
-                                jo.put("title", stringBuilder.toString());
-                            } catch (JSONException e) {
-                                Log.e("ImageToText", "JSONException: Couldn't convert" +
-                                        " text to JSONObject");
-                            }
+                            createNote(rootPath, stringBuilder);
+
+//                            JSONObject joTemp = new JSONObject();
+//                            try {
+//                                joTemp.put("title", );
+//                                joTemp.put("text", stringBuilder.toString());
+//                            } catch (JSONException e) {
+//                                Log.e("ImageToText", "JSONException: Couldn't convert" +
+//                                        " text to JSONObject");
+//                                e.printStackTrace();
+//                            }
+//
+//                            //Save Text into file
+//                            jsonArray.put(joTemp);
+//
+//                            try {
+//                                File f = new File(rootPath + "imageNotes.ser");
+//                                FileOutputStream fo = new FileOutputStream(f);
+//                                ObjectOutputStream o = new ObjectOutputStream(fo);
+//                                String j = jo.toString();
+//                                o.writeObject(j);
+//                                o.close();
+//                                fo.close();
+//                            }
+//                            catch (IOException e) {
+//                                e.printStackTrace();
+//                                Log.e("ImageToText: ", "Couldn't save to imageNotes.ser file");
+//                            }
+
 
                             buttonProcess.setVisibility(View.GONE);
                         }
@@ -176,5 +250,60 @@ public class ImageToText extends AppCompatActivity {
         imageView.setImageBitmap(rotatedBitmap);
         bitmap = rotatedBitmap;
         Log.i("Orientation", "Rotating");
+    }
+
+    private void createNote(final String rootPath, final StringBuilder stringBuilder){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(ImageToText.this);
+        builder.setTitle("Set Name");
+
+        final EditText name_input = new EditText(ImageToText.this);
+        name_input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(name_input);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String new_name;
+                new_name = name_input.getText().toString();
+
+                JSONObject joTemp = new JSONObject();
+                try {
+                    joTemp.put("title", new_name);
+                    joTemp.put("text", stringBuilder.toString());
+                } catch (JSONException e) {
+                    Log.e("ImageToText", "JSONException: Couldn't convert" +
+                            " text to JSONObject");
+                    e.printStackTrace();
+                }
+
+                //Save Text into file
+                jsonArray.put(joTemp);
+
+                try {
+                    File f = new File(rootPath + "imageNotes.ser");
+                    FileOutputStream fo = new FileOutputStream(f);
+                    ObjectOutputStream o = new ObjectOutputStream(fo);
+                    String j = jo.toString();
+                    o.writeObject(j);
+                    o.close();
+                    fo.close();
+
+                    Toast.makeText(getApplicationContext(), "Note Saved", Toast.LENGTH_SHORT).show();
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                    Log.e("ImageToText: ", "Couldn't save to imageNotes.ser file");
+                }
+
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+                Toast.makeText(getApplicationContext(), "Note Not Saved", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.show();
     }
 }
