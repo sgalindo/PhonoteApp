@@ -117,6 +117,7 @@ public class projectMenu extends AppCompatActivity{
                     ListData selected = aList.get(position);
                     Intent RootMenu = new Intent(context, RootMenu.class);
                     RootMenu.putExtra("name", selected.name);
+                    RootMenu.putExtra("position", position);
                     startActivity(RootMenu);
                 }
             });

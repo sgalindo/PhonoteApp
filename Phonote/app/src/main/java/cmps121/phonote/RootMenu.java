@@ -89,6 +89,7 @@ public class RootMenu extends AppCompatActivity {
             project_name.setTooltipText(bundle.getCharSequence("name_of_project"));
         }
         String name = bundle.getString("name");
+        final int position = bundle.getInt("position");
         final String fileName = bundle.getString("name");
         if (name.length() > 15){
             name = name.substring(0, 13) + "...";
@@ -190,10 +191,31 @@ public class RootMenu extends AppCompatActivity {
                         catch(IOException e){
                             //do nothing
                         }
-                        boys.remove(fileName);
-                        try
+                        boys.remove(position);
+                        try{
+                            File f = new File(getFilesDir(), "project_names.ser");
+                            FileOutputStream file_out = new FileOutputStream(f);
+                            ObjectOutputStream object_out = new ObjectOutputStream(file_out);
+                            String j = boy.toString();
+                            object_out.writeObject(j);
+                            object_out.close();
+                            file_out.close();
+                        }
+                        catch(IOException e){
+                            //do nothing
+                        }
+                        Intent i = new Intent(RootMenu.this, projectMenu.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(i);
                     }
                 });
+                builder.setNegativeButton("NO", new DialogInterface.OnClickListener(){
+                   @Override
+                   public void onClick(DialogInterface dialog, int which){
+                       dialog.cancel();
+                   }
+                });
+                builder.show();
             }
         });
     }
