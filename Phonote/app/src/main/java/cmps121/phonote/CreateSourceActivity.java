@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,8 +30,6 @@ public class CreateSourceActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_source);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         Bundle bundle = getIntent().getExtras();
         final String name = bundle.getString("name");
@@ -95,6 +94,15 @@ public class CreateSourceActivity extends AppCompatActivity {
                 startActivity(sourceListIntent);
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        TextView viewTitle = findViewById(R.id.textView_CreateSourceTitle);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitle(viewTitle.getText());
     }
 
     public JSONObject createSourceManual() {

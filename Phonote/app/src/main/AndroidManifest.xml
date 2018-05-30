@@ -33,18 +33,17 @@
         </activity>
         <activity
             android:name=".CreateSourceActivity"
-            android:label="@string/title_activity_create_citation"
-
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
-        <activity android:name=".SourceListActivity" />
-        <activity android:name=".ViewSourceActivity" />
-
         <activity
-            android:name=".CreateCitationActivity"
-            android:label="@string/title_activity_create_citation"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".SourceListActivity"
+            android:label="Sources">
+        </activity>
+
+        <activity android:name=".ViewSourceActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
 
         <activity
             android:name=".projectMenu"
