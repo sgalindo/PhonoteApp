@@ -204,9 +204,10 @@ public class RootMenu extends AppCompatActivity {
                         catch(IOException e){
                             //do nothing
                         }
-                        Intent i = new Intent(RootMenu.this, projectMenu.class);
-                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(i);
+                        Intent projectMenu = new Intent(RootMenu.this, projectMenu.class);
+                        projectMenu.putExtra("deleted", true);
+                        projectMenu.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(projectMenu);
                     }
                 });
                 builder.setNegativeButton("NO", new DialogInterface.OnClickListener(){

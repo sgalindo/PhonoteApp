@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView;
+import android.widget.Toast;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +42,15 @@ public class projectMenu extends AppCompatActivity{
     }
     protected void onResume(){
         super.onResume();
+        Intent intent = getIntent();
+        if(intent.hasExtra("deleted")){
+            Context context = getApplicationContext();
+            CharSequence text = "Project Deleted";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
         ArrayAdapter<String> arrayAdapter;
         final Intent goToRootMenuForProject = new Intent(this, RootMenu.class);
         File projects = new File(getFilesDir(), "projects");
