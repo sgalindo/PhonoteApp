@@ -44,12 +44,15 @@ public class projectMenu extends AppCompatActivity{
         super.onResume();
         Intent intent = getIntent();
         if(intent.hasExtra("deleted")){
-            Context context = getApplicationContext();
-            CharSequence text = "Project Deleted";
-            int duration = Toast.LENGTH_SHORT;
+            boolean deleted = intent.getBooleanExtra("deleted", false);
+            if(deleted == true) {
+                Context context = getApplicationContext();
+                CharSequence text = "Project Deleted";
+                int duration = Toast.LENGTH_SHORT;
 
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.show();
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+            }
         }
         ArrayAdapter<String> arrayAdapter;
         final Intent goToRootMenuForProject = new Intent(this, RootMenu.class);
