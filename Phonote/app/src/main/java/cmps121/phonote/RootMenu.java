@@ -1,6 +1,8 @@
 package cmps121.phonote;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
@@ -33,13 +35,22 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.drive.Drive;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONException;
+
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 
 public class RootMenu extends AppCompatActivity {
+    public JSONObject boy = null;
+    public JSONArray boys = null;
 
     private ImageButton imgToTxt;
 
@@ -78,6 +89,7 @@ public class RootMenu extends AppCompatActivity {
             project_name.setTooltipText(bundle.getCharSequence("name_of_project"));
         }
         String name = bundle.getString("name");
+        final String fileName = bundle.getString("name");
         if (name.length() > 15){
             name = name.substring(0, 13) + "...";
         }
@@ -144,6 +156,46 @@ public class RootMenu extends AppCompatActivity {
             }
         });
 
+        Button delete = (Button) findViewById(R.id.DeleteButton);
+        delete.setOnClickListener(new Button.OnClickListener(){
+            public void onClick (View v){
+                AlertDialog.Builder builder = new AlertDialog.Builder(RootMenu.this);
+                builder.setTitle("Delete Project?");
+
+                builder.setPositiveButton("YES", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which){
+                        String rootPath = getFilesDir().getAbsolutePath()+"/projects/" + fileName;
+                        File dir = new File(rootPath);
+                        deleteDirectory(dir);
+                        try{
+                            File f = new File(getFilesDir(), "project_names.ser");
+                            FileInputStream file_in = new FileInputStream(f);
+                            ObjectInputStream object_in = new ObjectInputStream(file_in);
+                            String input = null;
+                            try{
+                                input = (String) object_in.readObject();
+                            }
+                            catch(ClassNotFoundException c){
+                                c.printStackTrace();
+                            }
+                            try{
+                                boy = new JSONObject(input);
+                                boys = boy.getJSONArray("data");
+                            }
+                            catch(JSONException e){
+                                e.printStackTrace();
+                            }
+                        }
+                        catch(IOException e){
+                            //do nothing
+                        }
+                        boys.remove(fileName);
+                        try
+                    }
+                });
+            }
+        });
     }
 
     @Override
@@ -273,6 +325,16 @@ public class RootMenu extends AppCompatActivity {
         return mediaFile;
     }
 
+    //Helper function to delete directories
+    boolean deleteDirectory(File directoryToBeDeleted){
+        File[] allContents = directoryToBeDeleted.listFiles();
+        if(allContents != null){
+            for(File file : allContents){
+                deleteDirectory(file);
+            }
+        }
+        return directoryToBeDeleted.delete();
+    }
 
 }
 
