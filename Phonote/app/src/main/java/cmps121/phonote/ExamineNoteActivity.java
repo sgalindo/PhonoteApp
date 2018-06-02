@@ -27,6 +27,7 @@ public class ExamineNoteActivity extends AppCompatActivity {
     EditText titleView;
     EditText textView;
     Button saveEdit;
+    Button deleteEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +47,8 @@ public class ExamineNoteActivity extends AppCompatActivity {
         if(position == -1){
             Log.e(TAG, "position value -1, couldn't get position");
         }else{
-            Toast.makeText(getApplicationContext(), "Note Number: " + position, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "Note Number: " + position, Toast.LENGTH_SHORT).show();
+            Log.i(TAG, "Good So Far: position: "+ position);
         }
 
         // Get the views and fill them with Required text-------------------------------------------
@@ -134,6 +136,87 @@ public class ExamineNoteActivity extends AppCompatActivity {
                     catch (IOException e) {
                         e.printStackTrace();
                         Log.e(TAG, "Couldn't save to imageNotes.ser file");
+                    }
+
+                }catch (FileNotFoundException e){
+                    Log.e(TAG, "FileNotFoundException: imageNotes.ser doesn't exist yet");
+                    e.printStackTrace();
+                    finish();
+                }catch (IOException e){
+                    Log.e(TAG, "IOException: imageNotes.ser doesn't exist yet");
+                    e.printStackTrace();
+                    finish();
+                }
+            }
+        });
+
+        // Define Delete Button---------------------------------------------------------------------
+        deleteEdit = (Button)findViewById(R.id.delete_edit_note);
+        deleteEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                JSONArray jsonArray = null;
+                JSONObject jo = null;
+
+                // Open imageNotes.ser
+                try {
+                    File f = new File(rootPath + "imageNotes.ser");
+                    FileInputStream fi = new FileInputStream(f);
+                    ObjectInputStream o = new ObjectInputStream(fi);
+                    String jsonString = null;
+
+                    try {
+                        jsonString = (String) o.readObject();
+                    }
+                    catch (ClassNotFoundException c) {
+                        c.printStackTrace();
+                    }
+                    try {
+                        jo = new JSONObject(jsonString);
+                        jsonArray = jo.getJSONArray("data");
+                    }
+                    catch (JSONException je) {
+                        je.printStackTrace();
+                    }
+
+                    // This will create an updated JSONArray without the selected note
+                    JSONArray updatedArray = new JSONArray();
+                    if(jsonArray != null){
+                        for(int i = 0; i < jsonArray.length(); i++){
+                            if( i != position){
+                                try{
+                                    updatedArray.put(jsonArray.get(i));
+                                }catch(JSONException ex){
+                                    Log.e(TAG, "couldn't get value from jsonArray.get()");
+                                    finish();
+                                }
+                            }
+                        }
+                    }
+
+                    // Replace the data inside of the JSONObject jo
+                    try{
+                        jo.put("data", updatedArray);
+                    }catch (JSONException ex){
+                        Log.e(TAG, "Couldn't update JSONObject jo with the updatedArray");
+                    }
+
+                    // Serialize the jsonObject
+                    try {
+                        f = new File(rootPath + "imageNotes.ser");
+                        FileOutputStream fo = new FileOutputStream(f);
+                        ObjectOutputStream oo = new ObjectOutputStream(fo);
+                        String j = jo.toString();
+                        oo.writeObject(j);
+                        oo.close();
+                        fo.close();
+
+                        Toast.makeText(getApplicationContext(), "Note Saved", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                    catch (IOException e) {
+                        e.printStackTrace();
+                        Log.e(TAG, "Deleting note: Couldn't save to imageNotes.ser file");
                     }
 
                 }catch (FileNotFoundException e){
