@@ -42,7 +42,7 @@ public class ViewNotes extends AppCompatActivity {
         text.setVisibility(View.INVISIBLE);
 
         Bundle bundle = getIntent().getExtras();
-        String name = bundle.getString("name");
+        final String name = bundle.getString("name");
         final String rootPath = getFilesDir().getAbsolutePath() + "/projects/" + name + "/notes/";
 
         jo = null;
@@ -112,6 +112,7 @@ public class ViewNotes extends AppCompatActivity {
 
                     viewNotesIntent.putExtra("title",     selected.title);
                     viewNotesIntent.putExtra("text",      selected.text);
+                    viewNotesIntent.putExtra("project",   name);
                     viewNotesIntent.putExtra("pos",       position);
 
                     startActivity(viewNotesIntent);
