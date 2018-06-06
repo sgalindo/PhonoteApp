@@ -127,7 +127,6 @@ public class editImage extends AppCompatActivity {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
                 Intent intent = new Intent(getApplicationContext(), ImageToText.class);
                 intent.putExtra("methodName","textFromEditImage");
                 intent.putExtra("pictureLocation", picLoc);
@@ -211,7 +210,7 @@ public class editImage extends AppCompatActivity {
                     case MotionEvent.ACTION_DOWN:
                         dy =(int)(view.getY() - event.getRawY());
                         bm = Bitmap.createBitmap(frameLayout.getWidth(),frameLayout.getHeight(), Bitmap.Config.ARGB_8888);
-                        Toast.makeText(getApplicationContext(),  frameLayout.getX() + " " + rect.left + " " + frameLayout.getY() +  " " + rect.top , Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getApplicationContext(),  frameLayout.getX() + " " + rect.left + " " + frameLayout.getY() +  " " + rect.top , Toast.LENGTH_LONG).show();
                         canvas = new Canvas(bm);
                         break;
                     case MotionEvent.ACTION_UP:
@@ -221,9 +220,12 @@ public class editImage extends AppCompatActivity {
                         FrameLayout.LayoutParams leftParams = (FrameLayout.LayoutParams) ibCropLeft.getLayoutParams();
                         FrameLayout.LayoutParams rightParams = (FrameLayout.LayoutParams) ibCropRight.getLayoutParams();
                         FrameLayout.LayoutParams botParams = (FrameLayout.LayoutParams) ibCropBot.getLayoutParams();
-                        if(y+dy <= botParams.topMargin-100 && y+dy>0){ //prevents the crop from being moved below the bot crop
+                        if(y+dy > botParams.topMargin-ibCropBot.getHeight()){ //prevents the crop from being moved below the bot crop
+                            topParams.topMargin = botParams.topMargin-ibCropBot.getHeight();
+                        } else if (y+dy<0){
+                            topParams.topMargin = 0;
+                        } else {
                             topParams.topMargin = y+dy;
-                            //Toast.makeText(getApplicationContext(),(y+dy) + " " + botParams.topMargin,Toast.LENGTH_LONG).show();
                         }
 
                         leftParams.topMargin = (topParams.topMargin + botParams.topMargin)/2;
@@ -255,7 +257,13 @@ public class editImage extends AppCompatActivity {
                         FrameLayout.LayoutParams leftParams = (FrameLayout.LayoutParams) ibCropLeft.getLayoutParams();
                         FrameLayout.LayoutParams rightParams = (FrameLayout.LayoutParams) ibCropRight.getLayoutParams();
                         FrameLayout.LayoutParams botParams = (FrameLayout.LayoutParams) ibCropBot.getLayoutParams();
-                        botParams.topMargin = y+dy;
+                        if(y+dy < topParams.topMargin+ibCropTop.getHeight()){ //prevents the crop from being moved below the bot crop
+                            botParams.topMargin = topParams.topMargin+ibCropTop.getHeight();
+                        } else if (y+dy>frameLayout.getHeight()-ibCropBot.getHeight()){
+                            botParams.topMargin = frameLayout.getHeight()-ibCropBot.getHeight();
+                        } else {
+                            botParams.topMargin = y+dy;
+                        }
                         leftParams.topMargin = (topParams.topMargin + botParams.topMargin)/2;
                         rightParams.topMargin = (topParams.topMargin + botParams.topMargin)/2;
                         view.setLayoutParams(botParams);
@@ -286,7 +294,13 @@ public class editImage extends AppCompatActivity {
                         FrameLayout.LayoutParams leftParams = (FrameLayout.LayoutParams) ibCropLeft.getLayoutParams();
                         FrameLayout.LayoutParams rightParams = (FrameLayout.LayoutParams) ibCropRight.getLayoutParams();
                         FrameLayout.LayoutParams botParams = (FrameLayout.LayoutParams) ibCropBot.getLayoutParams();
-                        leftParams.leftMargin = x+dx;
+                        if(x+dx > rightParams.leftMargin-ibCropRight.getWidth()){ //prevents the crop from being moved below the bot crop
+                            leftParams.leftMargin = rightParams.leftMargin-ibCropRight.getWidth();
+                        } else if (x+dx< 0){
+                            leftParams.leftMargin = 0;
+                        } else{
+                            leftParams.leftMargin = x+dx;
+                        }
                         topParams.leftMargin = (leftParams.leftMargin + rightParams.leftMargin)/2;
                         botParams.leftMargin = (leftParams.leftMargin + rightParams.leftMargin)/2;
                         view.setLayoutParams(leftParams);
@@ -317,7 +331,13 @@ public class editImage extends AppCompatActivity {
                         FrameLayout.LayoutParams leftParams = (FrameLayout.LayoutParams) ibCropLeft.getLayoutParams();
                         FrameLayout.LayoutParams rightParams = (FrameLayout.LayoutParams) ibCropRight.getLayoutParams();
                         FrameLayout.LayoutParams botParams = (FrameLayout.LayoutParams) ibCropBot.getLayoutParams();
-                        rightParams.leftMargin = x+dx;
+                        if(x+dx < leftParams.leftMargin+ibCropRight.getWidth()){ //prevents the crop from being moved below the bot crop
+                            rightParams.leftMargin = leftParams.leftMargin+ibCropRight.getWidth();
+                        } else if (x+dx > frameLayout.getWidth()-ibCropRight.getWidth()){
+                            rightParams.leftMargin =frameLayout.getWidth()-ibCropRight.getWidth();
+                        } else{
+                            rightParams.leftMargin = x+dx;
+                        }
                         topParams.leftMargin = (leftParams.leftMargin + rightParams.leftMargin)/2;
                         botParams.leftMargin = (leftParams.leftMargin + rightParams.leftMargin)/2;
                         view.setLayoutParams(rightParams);

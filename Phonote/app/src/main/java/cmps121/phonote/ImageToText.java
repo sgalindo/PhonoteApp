@@ -120,7 +120,7 @@ public class ImageToText extends AppCompatActivity {
                         TextRecognizer textRecognizer = new TextRecognizer.Builder(getApplicationContext()).build();
                         if(!textRecognizer.isOperational()) {
                             Toast.makeText(getApplicationContext(), "Could Not Get Text", Toast.LENGTH_SHORT).show();
-                        }else {
+                        } else {
                             Frame frame = new Frame.Builder().setBitmap(bitmap).build();
                             SparseArray<TextBlock> items = textRecognizer.detect(frame);
                             StringBuilder stringBuilder = new StringBuilder();
@@ -325,7 +325,6 @@ public class ImageToText extends AppCompatActivity {
         Bitmap bitmap1 = BitmapFactory.decodeFile(location);
 
         rotateImage(0, bitmap1);
-
 
         // Getting rid of buttons after they have been used.
         buttonProcess.setVisibility(View.VISIBLE);

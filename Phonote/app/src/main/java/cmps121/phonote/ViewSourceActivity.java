@@ -3,6 +3,7 @@ package cmps121.phonote;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -29,6 +30,7 @@ public class ViewSourceActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         final String name = bundle.getString("name");
+        Log.d("GOTEM", "View"+name);
         final String rootPath = getFilesDir().getAbsolutePath() + "/projects/" + name + "/sources/";
         Intent i = getIntent();
 
@@ -39,18 +41,21 @@ public class ViewSourceActivity extends AppCompatActivity {
         String publisher =   i.getStringExtra("publisher");
         String city =        i.getStringExtra("city");
         String year =        i.getStringExtra("year");
+        String citation =    i.getStringExtra("citation");
 
         TextView vTitle = findViewById(R.id.view_Title);
         TextView vAuthor = findViewById(R.id.view_Author);
         TextView vPublisher = findViewById(R.id.view_Publisher);
         TextView vCity = findViewById(R.id.view_City);
         TextView vYear = findViewById(R.id.view_Year);
+        TextView vCitation = findViewById(R.id.view_Citation);
 
         vTitle.setText(title);
         vAuthor.setText(author);
         vPublisher.setText(publisher);
         vCity.setText(city);
         vYear.setText(year);
+        vCitation.setText(citation);
 
         Button deleteButton = (Button) findViewById(R.id.button_delete);
         deleteButton.setOnClickListener(new View.OnClickListener() {

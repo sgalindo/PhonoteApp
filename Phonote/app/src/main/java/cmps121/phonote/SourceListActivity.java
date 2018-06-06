@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -41,7 +42,8 @@ public class SourceListActivity extends AppCompatActivity {
         text.setVisibility(View.INVISIBLE);
 
         Bundle bundle = getIntent().getExtras();
-        String name = bundle.getString("name");
+        final String name = bundle.getString("name");
+        Log.d("GOTEM", "List"+name);
         final String rootPath = getFilesDir().getAbsolutePath() + "/projects/" + name + "/sources/";
 
         jo = null;
@@ -73,6 +75,7 @@ public class SourceListActivity extends AppCompatActivity {
                     data.publisher = jsonArray.getJSONObject(i).getString("publisher");
                     data.city = jsonArray.getJSONObject(i).getString("city");
                     data.year = jsonArray.getJSONObject(i).getString("year");
+                    data.citation = jsonArray.getJSONObject(i).getString("citation");
                 }
                 catch (JSONException je) {
                     je.printStackTrace();
@@ -98,11 +101,13 @@ public class SourceListActivity extends AppCompatActivity {
 
                     Intent viewSourceIntent = new Intent(context, ViewSourceActivity.class);
 
+                    viewSourceIntent.putExtra("name", name);
                     viewSourceIntent.putExtra("title",     selected.title);
                     viewSourceIntent.putExtra("author",    selected.author);
                     viewSourceIntent.putExtra("publisher", selected.publisher);
                     viewSourceIntent.putExtra("city",      selected.city);
                     viewSourceIntent.putExtra("year",      selected.year);
+                    viewSourceIntent.putExtra("citation",  selected.citation);
                     viewSourceIntent.putExtra("pos",       position);
 
                     startActivity(viewSourceIntent);
@@ -129,7 +134,7 @@ public class SourceListActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case R.id.action_add_source:
-                Intent createSourceIntent = new Intent(this, CreateSourceActivity.class);
+                Intent createSourceIntent = new Intent(this, AutoCitationActivity.class);
                 Bundle bundle = getIntent().getExtras();
                 String name = bundle.getString("name");
                 createSourceIntent.putExtra("name", name);
