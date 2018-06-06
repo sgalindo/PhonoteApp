@@ -30,6 +30,8 @@ import org.json.JSONArray;
 public class projectMenu extends AppCompatActivity{
     public JSONObject boy = null;
     public JSONArray boys = null;
+    int listSize;
+    String listItems[];
     private static final String TAG = "projectMenu";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,18 +44,7 @@ public class projectMenu extends AppCompatActivity{
     }
     protected void onResume(){
         super.onResume();
-        Intent intent = getIntent();
-        if(intent.hasExtra("deleted")){
-            boolean deleted = intent.getBooleanExtra("deleted", false);
-            if(deleted == true) {
-                Context context = getApplicationContext();
-                CharSequence text = "Project Deleted";
-                int duration = Toast.LENGTH_SHORT;
 
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.show();
-            }
-        }
         ArrayAdapter<String> arrayAdapter;
         final Intent goToRootMenuForProject = new Intent(this, RootMenu.class);
         File projects = new File(getFilesDir(), "projects");
@@ -110,7 +101,8 @@ public class projectMenu extends AppCompatActivity{
                 aList.add(dataBoy);
                 Log.d(TAG, "Showing list");
             }
-            String[] listItems = new String[aList.size()];
+            listItems = new String[aList.size()];
+            listSize = aList.size();
             for (int i = 0; i < aList.size(); i++) {
                 ListData listD = aList.get(i);
                 listItems[i] = listD.name;
@@ -166,6 +158,24 @@ public class projectMenu extends AppCompatActivity{
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         new_name = name_input.getText().toString();
+                        boolean duplicate = false;
+                        Log.d(TAG, "listSize= "+listSize);
+                        for(int i = 0; i < listSize; i++){
+                            Log.d(TAG, "listItems[i]= "+ listItems[i]);
+                            Log.d(TAG, "new_name: "+ new_name);
+                            if(listItems[i].equals(new_name)){
+                                Log.d(TAG, "duplicate is true");
+                                duplicate = true;
+                            }
+                        }
+                        if(duplicate == true){
+                            Context context = getApplicationContext();
+                            CharSequence text = "Project named: \""+new_name +"\" already exists!";
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                            return;
+                        }
                         //boolean projectCreated = true;
                         //Intent projectMenu = new Intent(projectMenu.this, projectMenu.class);
                         //projectMenu.putExtra("name_of_project", new_name);
