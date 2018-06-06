@@ -326,7 +326,6 @@ public class ImageToText extends AppCompatActivity {
 
         rotateImage(0, bitmap1);
 
-
         // Getting rid of buttons after they have been used.
         buttonProcess.setVisibility(View.VISIBLE);
         buttonGetImage.setVisibility(View.GONE); // You may want to set this to invisible
