@@ -223,11 +223,6 @@ public class RootMenu extends AppCompatActivity {
                         Toast toast = Toast.makeText(context, text, duration);
                         toast.show();
                         Intent projectMenu = new Intent(RootMenu.this, projectMenu.class);
-<<<<<<< HEAD
-                        deleted = true;
-                        projectMenu.putExtra("deleted", deleted);
-=======
->>>>>>> josh_branch
                         projectMenu.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(projectMenu);
                     }
