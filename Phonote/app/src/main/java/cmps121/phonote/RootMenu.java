@@ -2,6 +2,7 @@ package cmps121.phonote;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -216,9 +217,17 @@ public class RootMenu extends AppCompatActivity {
                         catch(IOException e){
                             //do nothing
                         }
+                        Context context = getApplicationContext();
+                        CharSequence text = "Project Deleted";
+                        int duration = Toast.LENGTH_SHORT;
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();
                         Intent projectMenu = new Intent(RootMenu.this, projectMenu.class);
+<<<<<<< HEAD
                         deleted = true;
                         projectMenu.putExtra("deleted", deleted);
+=======
+>>>>>>> josh_branch
                         projectMenu.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(projectMenu);
                     }
