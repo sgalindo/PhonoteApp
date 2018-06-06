@@ -176,6 +176,19 @@ public class ImageToText extends AppCompatActivity {
                     }
                 }
         );
+
+        if(savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if (extras == null) {
+                //Extra bundle is null
+            }else{
+                String method = extras.getString("methodName");
+                String picLoc = extras.getString("pictureLocation");
+                if (method.equals("textFromEditImage") && picLoc != null) {
+                    textFromEditImage(picLoc);
+                }
+            }
+        }
     }
 
     private void openGallery(){
@@ -305,5 +318,21 @@ public class ImageToText extends AppCompatActivity {
             }
         });
         builder.show();
+    }
+
+    private void textFromEditImage(String location){
+
+        Bitmap bitmap1 = BitmapFactory.decodeFile(location);
+
+        rotateImage(0, bitmap1);
+
+
+        // Getting rid of buttons after they have been used.
+        buttonProcess.setVisibility(View.VISIBLE);
+        buttonGetImage.setVisibility(View.GONE); // You may want to set this to invisible
+
+        //Deletes the file after displaying it since we are only saving as text
+        File file = new File(location);
+        file.delete();
     }
 }

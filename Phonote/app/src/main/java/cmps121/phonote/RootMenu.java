@@ -138,7 +138,18 @@ public class RootMenu extends AppCompatActivity {
                 new Button.OnClickListener() {
                     public void onClick(View v) {
                         Intent intent = new Intent(getApplicationContext(), ImageToText.class);
-                        intent.putExtra("name", finalName);
+                        intent.putExtra("name", fileName); // This may need to be fileName instead of finalName? I'm not 100% sure
+                        startActivity(intent);
+                    }
+                }
+        );
+
+        ImageButton notesButton = (ImageButton) findViewById(R.id.go_to_notes);
+        notesButton.setOnClickListener(
+                new Button.OnClickListener(){
+                    public void onClick(View v){
+                        Intent intent = new Intent(getApplicationContext(), ViewNotes.class);
+                        intent.putExtra("name", fileName);
                         startActivity(intent);
                     }
                 }
