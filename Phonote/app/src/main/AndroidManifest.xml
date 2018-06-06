@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-feature android:name="android.hardware.camera" />
 
@@ -31,14 +32,18 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".CreateSourceActivity"
-            android:label="@string/title_activity_create_citation"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".SourceListActivity" />
-        <activity android:name=".ViewSourceActivity" />
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
         <activity
-            android:name=".CreateCitationActivity"
-            android:label="@string/title_activity_create_citation"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".SourceListActivity"
+            android:label="Sources">
+        </activity>
+
+        <activity android:name=".ViewSourceActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
         <activity
             android:name=".projectMenu"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -50,6 +55,9 @@
 
         <activity android:name=".ImageToText" />
         <activity android:name=".editImage" />
+        <activity
+            android:name=".AutoCitationActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ViewNotes" />
         <activity android:name=".ExamineNoteActivity"></activity>
     </application>

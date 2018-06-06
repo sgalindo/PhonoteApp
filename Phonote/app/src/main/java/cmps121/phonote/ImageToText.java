@@ -120,7 +120,7 @@ public class ImageToText extends AppCompatActivity {
                         TextRecognizer textRecognizer = new TextRecognizer.Builder(getApplicationContext()).build();
                         if(!textRecognizer.isOperational()) {
                             Toast.makeText(getApplicationContext(), "Could Not Get Text", Toast.LENGTH_SHORT).show();
-                        }else {
+                        } else {
                             Frame frame = new Frame.Builder().setBitmap(bitmap).build();
                             SparseArray<TextBlock> items = textRecognizer.detect(frame);
                             StringBuilder stringBuilder = new StringBuilder();

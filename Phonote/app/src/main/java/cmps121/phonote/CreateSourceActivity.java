@@ -4,9 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,15 +34,32 @@ public class CreateSourceActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_source);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         Bundle bundle = getIntent().getExtras();
         final String name = bundle.getString("name");
+        Log.d("GOTEM", "Create"+name);
 
-        final ArrayList<SourceData> sourceList = new ArrayList<>();
+        Intent i = getIntent();
+        String title =       i.getStringExtra("title");
+        String author =      i.getStringExtra("author");
+        String publisher =   i.getStringExtra("publisher");
+        String city =        i.getStringExtra("city");
+        String year =        i.getStringExtra("year");
+
+        EditText titleText = findViewById(R.id.editText_Title);
+        EditText authorText = findViewById(R.id.editText_Author);
+        EditText publisherText = findViewById(R.id.editText_Publisher);
+        EditText cityText = findViewById(R.id.editText_City);
+        EditText yearText = findViewById(R.id.editText_Year);
+
+        titleText.setText(title);
+        authorText.setText(author);
+        publisherText.setText(publisher);
+        cityText.setText(city);
+        yearText.setText(year);
 
         Button saveBtn = findViewById(R.id.btn_Save);
+        Button cancelBtn = findViewById(R.id.btn_Cancel);
 
         final String rootPath = getFilesDir().getAbsolutePath() + "/projects/" + name + "/sources/";
         try {
@@ -95,6 +117,22 @@ public class CreateSourceActivity extends AppCompatActivity {
                 startActivity(sourceListIntent);
             }
         });
+
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        TextView viewTitle = findViewById(R.id.textView_CreateSourceTitle);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitle(viewTitle.getText());
     }
 
     public JSONObject createSourceManual() {
@@ -105,12 +143,31 @@ public class CreateSourceActivity extends AppCompatActivity {
         EditText cityText = findViewById(R.id.editText_City);
         EditText yearText = findViewById(R.id.editText_Year);
 
+        SpannableStringBuilder citation = new SpannableStringBuilder();
+        if (!authorText.getText().toString().equals("")) {
+            citation.append(authorText.getText().toString());
+            citation.append(". ");
+        }
+        SpannableStringBuilder sb = new SpannableStringBuilder(titleText.getText().toString());
+        StyleSpan iss = new StyleSpan(android.graphics.Typeface.ITALIC);
+        sb.setSpan(iss, 0, titleText.getText().toString().length()-1, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        citation.append(sb);
+        citation.append(". ");
+        citation.append(cityText.getText().toString());
+        citation.append(": ");
+        citation.append(publisherText.getText().toString());
+        citation.append(", ");
+        citation.append(yearText.getText().toString());
+        citation.append(". Print.");
+
+
         try {
             source.put("title", titleText.getText().toString());
             source.put("author", authorText.getText().toString());
             source.put("publisher", publisherText.getText().toString());
             source.put("city", cityText.getText().toString());
             source.put("year", yearText.getText().toString());
+            source.put("citation", citation.toString());
         }
         catch (JSONException je) {
             je.printStackTrace();

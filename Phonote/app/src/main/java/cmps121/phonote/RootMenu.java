@@ -2,6 +2,7 @@ package cmps121.phonote;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -51,7 +52,7 @@ import java.io.ObjectOutputStream;
 public class RootMenu extends AppCompatActivity {
     public JSONObject boy = null;
     public JSONArray boys = null;
-
+    public boolean deleted = false;
     private ImageButton imgToTxt;
 
     private int REQ_CODE_CAMERA = 1;
@@ -62,6 +63,7 @@ public class RootMenu extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        deleted = false;
         super.onCreate(savedInstanceState);
         Bundle bundle = getIntent().getExtras();
 
@@ -215,8 +217,12 @@ public class RootMenu extends AppCompatActivity {
                         catch(IOException e){
                             //do nothing
                         }
+                        Context context = getApplicationContext();
+                        CharSequence text = "Project Deleted";
+                        int duration = Toast.LENGTH_SHORT;
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();
                         Intent projectMenu = new Intent(RootMenu.this, projectMenu.class);
-                        projectMenu.putExtra("deleted", true);
                         projectMenu.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(projectMenu);
                     }
@@ -272,6 +278,7 @@ public class RootMenu extends AppCompatActivity {
     }
     protected void onResume() {
         super.onResume();
+        deleted = false;
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
         if (account != null){
