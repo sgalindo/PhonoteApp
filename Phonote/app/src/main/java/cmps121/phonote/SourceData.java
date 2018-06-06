@@ -8,4 +8,5 @@ public class SourceData implements Serializable {
     public String publisher;
     public String city;
     public String year;
+    public String citation;
 }

@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-feature android:name="android.hardware.camera" />
 
@@ -16,39 +17,31 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
- <activity android:name=".SplashActivity" android:theme="@style/SplashTheme">
+        <activity
+            android:name=".SplashActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-
-
         <activity
             android:name=".RootMenu"
             android:label="RootMenu"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".CreateSourceActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SourceListActivity"
-            android:label="Sources">
-        </activity>
-
-        <activity android:name=".ViewSourceActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
+            android:label="Sources" />
+        <activity
+            android:name=".ViewSourceActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".projectMenu"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity android:name=".takePicture" />
 
         <meta-data
@@ -56,7 +49,10 @@
             android:value="orc" />
 
         <activity android:name=".ImageToText" />
-        <activity android:name=".editImage"></activity>
+        <activity android:name=".editImage" />
+        <activity
+            android:name=".AutoCitationActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
