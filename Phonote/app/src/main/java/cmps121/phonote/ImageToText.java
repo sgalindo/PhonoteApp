@@ -176,7 +176,7 @@ public class ImageToText extends AppCompatActivity {
                     }
                 }
         );
-
+    try{
         if(savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if (extras == null) {
@@ -189,6 +189,10 @@ public class ImageToText extends AppCompatActivity {
                 }
             }
         }
+    } catch (Exception e){
+
+    }
+
     }
 
     private void openGallery(){
