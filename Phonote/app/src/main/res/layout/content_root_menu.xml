@@ -8,14 +8,40 @@
     tools:context=".RootMenu">
 
     <TextView
+        android:id="@+id/textView_Notes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Notes"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/textView2"
+        app:layout_constraintStart_toStartOf="@+id/go_to_notes"
+        app:layout_constraintTop_toBottomOf="@+id/go_to_notes"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageButton
+        android:id="@+id/go_to_notes"
+        android:layout_width="130dp"
+        android:layout_height="111dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginTop="28dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/projects"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/go_to_projects" />
+
+    <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="139dp"
-        android:layout_marginStart="139dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:text="Projects"
         android:textColor="@android:color/black"
-        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintStart_toStartOf="@+id/go_to_projects"
         app:layout_constraintTop_toBottomOf="@+id/go_to_projects" />
 
     <TextView
