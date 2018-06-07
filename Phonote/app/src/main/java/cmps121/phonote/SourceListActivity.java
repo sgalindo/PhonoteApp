@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -33,6 +34,18 @@ public class SourceListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_source_list);
+
+        Button addBtn = (Button) findViewById(R.id.add_btn);
+        addBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent createSourceIntent = new Intent(SourceListActivity.this, AutoCitationActivity.class);
+                Bundle bundle = getIntent().getExtras();
+                String name = bundle.getString("name");
+                createSourceIntent.putExtra("name", name);
+                startActivity(createSourceIntent);
+            }
+        });
     }
 
     protected void onResume() {
@@ -119,29 +132,6 @@ public class SourceListActivity extends AppCompatActivity {
 
             text.setVisibility(View.VISIBLE);
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-
-        inflater.inflate(R.menu.menu_source_list, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
-            case R.id.action_add_source:
-                Intent createSourceIntent = new Intent(this, AutoCitationActivity.class);
-                Bundle bundle = getIntent().getExtras();
-                String name = bundle.getString("name");
-                createSourceIntent.putExtra("name", name);
-                startActivity(createSourceIntent);
-            default:
-                super.onOptionsItemSelected(item);
-        }
-        return true;
     }
 
 }
