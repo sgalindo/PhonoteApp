@@ -43,7 +43,6 @@ public class SourceListActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         final String name = bundle.getString("name");
-        Log.d("GOTEM", "List"+name);
         final String rootPath = getFilesDir().getAbsolutePath() + "/projects/" + name + "/sources/";
 
         jo = null;

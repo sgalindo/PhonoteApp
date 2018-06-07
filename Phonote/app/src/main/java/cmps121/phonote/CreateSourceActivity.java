@@ -37,14 +37,15 @@ public class CreateSourceActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         final String name = bundle.getString("name");
-        Log.d("GOTEM", "Create"+name);
 
         Intent i = getIntent();
-        String title =       i.getStringExtra("title");
-        String author =      i.getStringExtra("author");
-        String publisher =   i.getStringExtra("publisher");
-        String city =        i.getStringExtra("city");
-        String year =        i.getStringExtra("year");
+        final String title =       i.getStringExtra("title");
+        final String author =      i.getStringExtra("author");
+        final String publisher =   i.getStringExtra("publisher");
+        final String city =        i.getStringExtra("city");
+        final String year =        i.getStringExtra("year");
+
+        final int position = i.getIntExtra("pos", -1);
 
         EditText titleText = findViewById(R.id.editText_Title);
         EditText authorText = findViewById(R.id.editText_Author);
@@ -95,6 +96,20 @@ public class CreateSourceActivity extends AppCompatActivity {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                try {
+                    jsonArray.remove(position);
+                    jo.remove("data");
+                    try {
+                        jo.put("data", jsonArray);
+                    }
+                    catch (JSONException je) {
+                        je.printStackTrace();
+                    }
+                }
+                catch (NullPointerException n) {
+                    n.printStackTrace();
+                }
+
                 JSONObject newSource = createSourceManual();
                 jsonArray.put(newSource);
 
@@ -124,15 +139,6 @@ public class CreateSourceActivity extends AppCompatActivity {
                 finish();
             }
         });
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        TextView viewTitle = findViewById(R.id.textView_CreateSourceTitle);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitle(viewTitle.getText());
     }
 
     public JSONObject createSourceManual() {

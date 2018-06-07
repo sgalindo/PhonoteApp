@@ -1,5 +1,6 @@
 package cmps121.phonote;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,25 +31,24 @@ public class ViewSourceActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         final String name = bundle.getString("name");
-        Log.d("GOTEM", "View"+name);
         final String rootPath = getFilesDir().getAbsolutePath() + "/projects/" + name + "/sources/";
-        Intent i = getIntent();
+        final Intent i = getIntent();
 
         final int position = i.getIntExtra("pos", -1);
 
-        String title =       i.getStringExtra("title");
-        String author =      i.getStringExtra("author");
-        String publisher =   i.getStringExtra("publisher");
-        String city =        i.getStringExtra("city");
-        String year =        i.getStringExtra("year");
-        String citation =    i.getStringExtra("citation");
+        final String title =       i.getStringExtra("title");
+        final String author =      i.getStringExtra("author");
+        final String publisher =   i.getStringExtra("publisher");
+        final String city =        i.getStringExtra("city");
+        final String year =        i.getStringExtra("year");
+        final String citation =    i.getStringExtra("citation");
 
-        TextView vTitle = findViewById(R.id.view_Title);
-        TextView vAuthor = findViewById(R.id.view_Author);
-        TextView vPublisher = findViewById(R.id.view_Publisher);
-        TextView vCity = findViewById(R.id.view_City);
-        TextView vYear = findViewById(R.id.view_Year);
-        TextView vCitation = findViewById(R.id.view_Citation);
+        final TextView vTitle = findViewById(R.id.view_Title);
+        final TextView vAuthor = findViewById(R.id.view_Author);
+        final TextView vPublisher = findViewById(R.id.view_Publisher);
+        final TextView vCity = findViewById(R.id.view_City);
+        final TextView vYear = findViewById(R.id.view_Year);
+        final TextView vCitation = findViewById(R.id.view_Citation);
 
         vTitle.setText(title);
         vAuthor.setText(author);
@@ -116,6 +116,22 @@ public class ViewSourceActivity extends AppCompatActivity {
                 Intent in = new Intent(ViewSourceActivity.this, SourceListActivity.class);
                 in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 in.putExtra("name", name);
+                startActivity(in);
+            }
+        });
+
+        Button editButton = (Button) findViewById(R.id.button_edit);
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent in = new Intent(ViewSourceActivity.this, CreateSourceActivity.class);
+                in.putExtra("name", name);
+                in.putExtra("title", title);
+                in.putExtra("author", author);
+                in.putExtra("publisher", publisher);
+                in.putExtra("city", city);
+                in.putExtra("year", year);
+                in.putExtra("pos", position);
                 startActivity(in);
             }
         });

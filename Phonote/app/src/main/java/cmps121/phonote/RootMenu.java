@@ -82,8 +82,6 @@ public class RootMenu extends AppCompatActivity {
 
         setContentView(R.layout.content_root_menu);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
 
         TextView project_name = (TextView) findViewById(R.id.name_of_project);
 
@@ -99,7 +97,6 @@ public class RootMenu extends AppCompatActivity {
 
         project_name.setText(name);
 
-        setSupportActionBar(toolbar);
         final GoogleSignInClient mGoogleSignInClient = buildGoogleSignInClient();
 
         final String finalName = name;
