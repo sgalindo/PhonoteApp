@@ -4,64 +4,61 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/beigeLight"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".RootMenu">
 
-    <TextView
-        android:id="@+id/textView_Notes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Notes"
-        android:textColor="@android:color/black"
-        app:layout_constraintBottom_toBottomOf="@+id/textView2"
-        app:layout_constraintStart_toStartOf="@+id/go_to_notes"
-        app:layout_constraintTop_toBottomOf="@+id/go_to_notes"
-        app:layout_constraintVertical_bias="0.0" />
+    <FrameLayout
+        android:id="@+id/flTopBrown"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:background="@color/beigeGray"
+        android:elevation="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <ImageButton
+
+    </FrameLayout>
+
+    <Button
         android:id="@+id/go_to_notes"
-        android:layout_width="130dp"
-        android:layout_height="111dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
-        android:layout_marginTop="28dp"
+        style="@style/rootButtons"
+        android:layout_width="104dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/beigeOrange"
         android:scaleType="fitXY"
         android:src="@drawable/projects"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/go_to_projects" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:text="Projects"
-        android:textColor="@android:color/black"
-        app:layout_constraintStart_toStartOf="@+id/go_to_projects"
-        app:layout_constraintTop_toBottomOf="@+id/go_to_projects" />
+        android:text="Notes"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/button_image_to_text"
+        app:layout_constraintTop_toBottomOf="@+id/button_image_to_text" />
 
     <TextView
         android:id="@+id/name_of_project"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:gravity="right"
+        android:layout_marginStart="8dp"
+        android:gravity="center"
         android:text="project_name"
         android:textAllCaps="false"
+        android:elevation="11dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textColor="@color/beigeWhite"
+        android:shadowColor="@android:color/black"
+        android:shadowDx="4"
+        android:shadowDy="4"
+        android:shadowRadius="5"
         android:textSize="30sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.622"
-        app:layout_constraintStart_toEndOf="@+id/sign_in_button"
+        app:layout_constraintBottom_toBottomOf="@+id/flTopBrown"
+        app:layout_constraintEnd_toEndOf="@+id/flTopBrown"
+        app:layout_constraintStart_toStartOf="@+id/flTopBrown"
         app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -69,125 +66,104 @@
         android:id="@+id/sign_out_button"
         android:layout_width="114dp"
         android:layout_height="48dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:elevation="11dp"
         android:text="@string/sign_out"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/flTopBrown" />
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/sign_in_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="32dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:elevation="11dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
     </com.google.android.gms.common.SignInButton>
 
-    <ImageButton
+    <Button
         android:id="@+id/btnCamera"
-        android:layout_width="130dp"
-        android:layout_height="110dp"
-        android:layout_marginLeft="36dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="16dp"
+        style="@style/rootButtons"
+        android:layout_width="158dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="48dp"
+        android:background="@color/beigeOrange"
         android:scaleType="fitXY"
+        android:text="Take Photo"
+        android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/flTopBrown"
         app:srcCompat="@android:drawable/ic_menu_camera" />
 
-    <ImageButton
+    <Button
         android:id="@+id/_createSource"
-        style="@style/Widget.AppCompat.ImageButton"
-        android:layout_width="130dp"
-        android:layout_height="107dp"
-        android:layout_marginBottom="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
+        style="@style/rootButtons"
+        android:layout_width="145dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/beigeOrange"
         android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sign_out_button"
+        android:text="Sources"
+        android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/go_to_notes"
+        app:layout_constraintTop_toBottomOf="@+id/go_to_notes"
         app:srcCompat="@drawable/book" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="32dp"
-        android:layout_marginStart="32dp"
-        android:text="Sources"
-        android:textColor="@android:color/black"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/_createSource" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="32dp"
-        android:layout_marginStart="32dp"
-        android:text="Convert Photo to Text"
-        android:textColor="@android:color/black"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_image_to_text" />
-
-    <ImageButton
+    <Button
         android:id="@+id/button_image_to_text"
-        android:layout_width="130dp"
-        android:layout_height="111dp"
-        android:layout_marginLeft="36dp"
-        android:layout_marginStart="36dp"
+        style="@style/rootButtons"
+        android:layout_width="307dp"
+        android:layout_height="50dp"
         android:layout_marginTop="16dp"
+        android:background="@color/beigeOrange"
         android:scaleType="fitXY"
         android:src="@drawable/picture_to_text"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <ImageButton
-        android:id="@+id/go_to_projects"
-        android:layout_width="130dp"
-        android:layout_height="111dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
-        android:layout_marginTop="32dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/projects"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sign_in_button" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="32dp"
-        android:layout_marginStart="32dp"
-        android:text="Take a Photo"
-        android:textColor="@android:color/black"
-        app:layout_constraintStart_toStartOf="parent"
+        android:text="Convert Image to Text"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/btnCamera"
         app:layout_constraintTop_toBottomOf="@+id/btnCamera" />
 
     <Button
+        android:id="@+id/go_to_projects"
+        style="@style/rootButtons"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/beigeOrange"
+        android:scaleType="fitXY"
+        android:src="@drawable/projects"
+        android:text="Projects"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/_createSource"
+        app:layout_constraintTop_toBottomOf="@+id/_createSource" />
+
+    <Button
         android:id="@+id/DeleteButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="32dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="62dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/holo_red_light"
         android:text="Delete"
+        app:layout_constraintStart_toStartOf="@+id/go_to_projects"
+        app:layout_constraintTop_toBottomOf="@+id/go_to_projects" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:adjustViewBounds="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.995" />
+        app:layout_constraintTop_toBottomOf="@+id/flTopBrown"
+        app:srcCompat="@drawable/bookroot"
+        tools:layout_editor_absoluteX="0dp" />
 
 </android.support.constraint.ConstraintLayout>
