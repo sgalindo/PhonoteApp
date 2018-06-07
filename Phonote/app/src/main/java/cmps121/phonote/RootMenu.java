@@ -53,7 +53,7 @@ public class RootMenu extends AppCompatActivity {
     public JSONObject boy = null;
     public JSONArray boys = null;
     public boolean deleted = false;
-    private ImageButton imgToTxt;
+    private Button imgToTxt;
 
     private int REQ_CODE_CAMERA = 1;
     private int REQ_CODE_CROP = 2;
@@ -100,7 +100,7 @@ public class RootMenu extends AppCompatActivity {
         final GoogleSignInClient mGoogleSignInClient = buildGoogleSignInClient();
 
         final String finalName = name;
-        ImageButton sourceListBtn = findViewById(R.id._createSource);
+        Button sourceListBtn = findViewById(R.id._createSource);
         sourceListBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,7 +111,7 @@ public class RootMenu extends AppCompatActivity {
             }
         });
 
-        ImageButton returnToProjects = findViewById(R.id.go_to_projects);
+        Button returnToProjects = findViewById(R.id.go_to_projects);
         returnToProjects.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,7 +120,7 @@ public class RootMenu extends AppCompatActivity {
         });
 
         //Click activity for camera button
-        ImageButton btnCamera = findViewById(R.id.btnCamera);
+        Button btnCamera = findViewById(R.id.btnCamera);
         btnCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,7 +132,7 @@ public class RootMenu extends AppCompatActivity {
             }
         });
 
-        imgToTxt = (ImageButton) findViewById(R.id.button_image_to_text);
+        imgToTxt = (Button) findViewById(R.id.button_image_to_text);
         imgToTxt.setOnClickListener(
                 new Button.OnClickListener() {
                     public void onClick(View v) {
@@ -143,7 +143,7 @@ public class RootMenu extends AppCompatActivity {
                 }
         );
 
-        ImageButton notesButton = (ImageButton) findViewById(R.id.go_to_notes);
+        Button notesButton = (Button) findViewById(R.id.go_to_notes);
         notesButton.setOnClickListener(
                 new Button.OnClickListener(){
                     public void onClick(View v){
