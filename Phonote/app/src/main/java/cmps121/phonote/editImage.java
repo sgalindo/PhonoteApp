@@ -20,10 +20,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Layout;
 import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -54,6 +56,8 @@ public class editImage extends AppCompatActivity {
     private boolean initializeFrame = true;
     private boolean hasCropBeenUpdated = false;
     private AlertDialog.Builder builder;
+    private Display display;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,12 +76,6 @@ public class editImage extends AppCompatActivity {
         ibCropRight = findViewById(R.id.ibCropRight);
 
         cropButtonEvent();
-
-
-        //Used to set the color of the bottom bar
-        //TODO: Fix the color (probably have to create a bitmap) -Dustin
-        SurfaceView svBottomBar = findViewById(R.id.svBottomBar);
-        svBottomBar.setBackgroundColor(0x7a7a7a);
 
         //Used to make a call only after the screen is drawn for the first time.  This is neccessary to make sure
         //we can get the correct size of the screen
@@ -151,12 +149,20 @@ public class editImage extends AppCompatActivity {
         try {
             File fileOut = new File(picLoc);
             FileOutputStream fos = new FileOutputStream(fileOut);
-            int left = rect.left-140, right = rect.width()+280;
-            int top = rect.top+140, bot = rect.height()+140;
-            if(left < 0) left = 0;
-            if(right > bmp.getWidth()) right = bmp.getWidth();
-            if(top < 0) top = 0;
-            if(bot > bmp.getHeight()) bot = bmp.getHeight();
+            int[] imageRect = getImageLocation(imageView);
+
+
+            float scaleX = (float)bmp.getWidth()/(float)imageRect[2]; //gets the scale to crop from the actual bitmap instead of the perceived image from the view
+            float scaleY = bmp.getHeight()/(float)imageRect[3]; //gets the scale to crop from the actual bitmap
+            //Toast.makeText(getApplicationContext(),scaleX + " " + ((float)bmp.getWidth()/(float)imageRect[2]) + " " + bmp.getWidth() + " " + imageView.getWidth(),Toast.LENGTH_LONG).show();
+            int left = rect.left - imageRect[0] + 8;
+            int top = rect.top + imageRect[1] /*- 63*/ + 8;
+            int right = (int)(scaleX * rect.width());
+            int bot = (int)(scaleY * rect.height());
+            if(left < 0 || left > bmp.getWidth()) left = 0;
+            if(right > bmp.getWidth() || right < 0) right = bmp.getWidth();
+            if(top < 0 || top > bmp.getHeight()) top = 0;
+            if(bot > bmp.getHeight() || bot < 0) bot = bmp.getHeight();
 
             Bitmap croppedBmp;
             //makes sure to only crop the image if the crop region has ever been updated
@@ -286,6 +292,8 @@ public class editImage extends AppCompatActivity {
                         dx =(int)(view.getX() - event.getRawX());
                         bm = Bitmap.createBitmap(frameLayout.getWidth(),frameLayout.getHeight(), Bitmap.Config.ARGB_8888);
                         canvas = new Canvas(bm);
+                        getImageLocation(imageView);
+                        //Toast.makeText(getApplicationContext(),imageView.getLocationOnScreen() + "---" + imageView.getY(), Toast.LENGTH_LONG).show();
                         break;
                     case MotionEvent.ACTION_UP:
                         break;
@@ -350,4 +358,47 @@ public class editImage extends AppCompatActivity {
             }
         });
     }
+    //0=left 1=top 2=width 3=height
+    //Used to find the actual coordinates/dimensions of the image in the imageview
+    int[] getImageLocation(ImageView iv) {
+        int[] ret = new int[4];
+
+        // Get image dimensions
+        // Get image matrix values and place them in an array
+        float[] f = new float[9];
+        iv.getImageMatrix().getValues(f);
+
+        // Extract the scale values using the constants (if aspect ratio maintained, scaleX == scaleY)
+        final float scaleX = f[Matrix.MSCALE_X];
+        final float scaleY = f[Matrix.MSCALE_Y];
+
+        // Get the drawable (could also get the bitmap behind the drawable and getWidth/getHeight)
+        final Drawable d = iv.getDrawable();
+        final int origW = d.getIntrinsicWidth();
+        final int origH = d.getIntrinsicHeight();
+
+        // Calculate the actual dimensions
+        final int actW = Math.round(origW * scaleX);
+        final int actH = Math.round(origH * scaleY);
+
+        ret[2] = actW;
+        ret[3] = actH;
+
+        // Get image position
+        // We assume that the image is centered into ImageView
+        int imgViewW = iv.getWidth();
+        int imgViewH = iv.getHeight();
+
+        int[] imgViewScreenLoc = new int[2];
+        iv.getLocationOnScreen(imgViewScreenLoc);
+
+        // get the actual image location inside its image view
+        int left = imgViewScreenLoc[0] + (imgViewW - actW) / 2;
+        int top = imgViewScreenLoc[1] + (imgViewH - actH) / 2;
+
+        ret[0] = left;
+        ret[1] = top;
+        return ret;
+    }
+
 }

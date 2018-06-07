@@ -1,11 +1,29 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/beigeGray</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="dropShadow">
+        <item name="android:shadowColor">@android:color/black</item>
+        <item name="android:shadowDx">4</item>
+        <item name="android:shadowDy">4</item>
+        <item name="android:shadowRadius">5</item>
+    </style>
+
+
+    <style name="rootButtons">
+        <item name="android:stateListAnimator">@null</item>
+        <item name="android:elevation">5dp</item>
+        <item name = "android:textColor">@color/beigeWhite</item>
+        <item name="android:shadowColor">@android:color/black</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">1</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

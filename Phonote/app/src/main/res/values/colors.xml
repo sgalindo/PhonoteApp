@@ -4,4 +4,10 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorBackground">#F9F9DC</color>
+    <color name="beigeLight">#f0e1cc</color>
+    <color name="beigeWhite">#f0e1cc</color>
+    <color name="beige">#e2ba87</color>
+    <color name="beigeOrange">#d88f6f</color>
+    <color name="beigeGray">#9A8A7D</color>
+
 </resources>
