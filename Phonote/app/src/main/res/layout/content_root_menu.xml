@@ -75,13 +75,14 @@
 
     <android.widget.Button
         android:id="@+id/sign_out_button"
-        android:layout_width="114dp"
-        android:layout_height="48dp"
+        android:layout_width="89dp"
+        android:layout_height="39dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:background="@drawable/custom_button2"
         android:elevation="11dp"
         android:text="@string/sign_out"
+        android:textColor="@color/beigeWhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/flTopBrown" />
 
@@ -91,8 +92,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:elevation="11dp"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -172,9 +173,10 @@
         android:layout_width="196dp"
         android:layout_height="50dp"
         android:layout_marginTop="16dp"
-        android:background="@color/beigeOrange"
+        style="@style/rootButtons"
         android:scaleType="fitXY"
         android:src="@drawable/projects"
+        android:background="@color/beigeOrange"
         android:text="Push To Drive"
         android:textColor="@color/beigeWhite"
         android:textSize="24sp"
