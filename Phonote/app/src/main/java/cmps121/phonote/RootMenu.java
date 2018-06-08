@@ -120,7 +120,7 @@ public class RootMenu extends AppCompatActivity {
         });
 
         // button to sync files to google docs account
-        ImageButton syncProject = findViewById(R.id.sync_files);
+        Button syncProject = findViewById(R.id.sync_files);
         syncProject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -297,7 +297,7 @@ public class RootMenu extends AppCompatActivity {
             signIn.setVisibility(View.INVISIBLE);
             Button signOut = findViewById(R.id.sign_out_button);
             signOut.setVisibility(View.VISIBLE);
-            ImageButton syncProject = findViewById(R.id.sync_files);
+            Button syncProject = findViewById(R.id.sync_files);
             syncProject.setEnabled((true));
             syncProject.setAlpha((float) 1);
         }
@@ -306,7 +306,7 @@ public class RootMenu extends AppCompatActivity {
             signIn.setVisibility(View.VISIBLE);
             Button signOut = findViewById(R.id.sign_out_button);
             signOut.setVisibility(View.INVISIBLE);
-            ImageButton syncProject = findViewById(R.id.sync_files);
+            Button syncProject = findViewById(R.id.sync_files);
             syncProject.setEnabled((false));
             syncProject.setAlpha((float) .5);
         }
@@ -334,7 +334,7 @@ public class RootMenu extends AppCompatActivity {
                 signIn.setVisibility(View.VISIBLE);
                 Button signOut = findViewById(R.id.sign_out_button);
                 signOut.setVisibility(View.INVISIBLE);
-                ImageButton syncProject = findViewById(R.id.sync_files);
+                Button syncProject = findViewById(R.id.sync_files);
                 syncProject.setEnabled((false));
                 syncProject.setAlpha((float) .5);
             }
