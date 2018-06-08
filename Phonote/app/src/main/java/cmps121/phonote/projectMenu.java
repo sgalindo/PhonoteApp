@@ -176,7 +176,7 @@ public class projectMenu extends AppCompatActivity{
                             toast.show();
                             return;
                         }
-                        if(new_name == null || new_name.isEmpty()){
+                        if(new_name.trim() == null || new_name.trim().isEmpty()){
                             Context context = getApplicationContext();
                             CharSequence text = "Please enter a valid name.";
                             int duration = Toast.LENGTH_SHORT;
