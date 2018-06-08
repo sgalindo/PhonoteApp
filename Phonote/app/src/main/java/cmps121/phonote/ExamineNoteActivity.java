@@ -211,7 +211,7 @@ public class ExamineNoteActivity extends AppCompatActivity {
                         oo.close();
                         fo.close();
 
-                        Toast.makeText(getApplicationContext(), "Note Saved", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Note deleted", Toast.LENGTH_SHORT).show();
                         finish();
                     }
                     catch (IOException e) {

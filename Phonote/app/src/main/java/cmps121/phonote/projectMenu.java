@@ -176,6 +176,14 @@ public class projectMenu extends AppCompatActivity{
                             toast.show();
                             return;
                         }
+                        if(new_name.trim() == null || new_name.trim().isEmpty()){
+                            Context context = getApplicationContext();
+                            CharSequence text = "Please enter a valid name.";
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                            return;
+                        }
                         //boolean projectCreated = true;
                         //Intent projectMenu = new Intent(projectMenu.this, projectMenu.class);
                         //projectMenu.putExtra("name_of_project", new_name);
