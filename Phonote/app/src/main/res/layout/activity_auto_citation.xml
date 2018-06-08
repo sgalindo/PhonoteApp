@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/beigeLight"
     tools:context=".AutoCitationActivity">
 
     <WebView
@@ -11,7 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true" >
+
+    </WebView>
 
     <TextView
         android:id="@+id/prompt_textView"
@@ -20,6 +23,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="128dp"
         android:text="Enter Book Title"
+        android:textColor="@color/beigeBrown"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -39,25 +43,29 @@
 
     <Button
         android:id="@+id/auto_source_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="139dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
+        android:background="@drawable/custom_button2"
         android:text="Generate Source"
+        android:textColor="@color/beigeWhite"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/search_title_editText" />
 
     <Button
         android:id="@+id/manual_source_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="193dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="64dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:background="@drawable/custom_button2"
         android:text="Enter Source Manually"
+        android:textColor="@color/beigeWhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -71,6 +79,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="64dp"
         android:text="...Or create a source manually"
+        android:textColor="@color/beigeBrown"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -84,6 +93,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="212dp"
         android:text="Generating Source..."
+        android:textColor="@color/beigeBrown"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -103,5 +113,26 @@
         app:layout_constraintStart_toStartOf="@+id/web_view"
         app:layout_constraintTop_toBottomOf="@+id/gen_textView"
         app:layout_constraintVertical_bias="0.0" />
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:background="@color/beigeGray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tvSourceGenerator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:text="Source Generator"
+            android:textColor="@color/beigeWhite"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

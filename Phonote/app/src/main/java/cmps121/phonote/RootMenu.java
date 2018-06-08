@@ -59,13 +59,14 @@ public class RootMenu extends AppCompatActivity {
     private int REQ_CODE_CROP = 2;
     private Uri HQimageUri; //needed to get high quality image instead of thumbnail
     private File imageFile; //hol
+    private Bundle bundle;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         deleted = false;
         super.onCreate(savedInstanceState);
-        Bundle bundle = getIntent().getExtras();
+        bundle = getIntent().getExtras();
 
         setContentView(R.layout.content_root_menu);
 
@@ -255,11 +256,14 @@ public class RootMenu extends AppCompatActivity {
                 bitmap = editImage.rotateBitmap(bitmap, 90); //automatically rotates the image 90degrees as I found all images started sideways
 
                 try {
+                    String name = bundle.getString("name");
                     FileOutputStream fos = new FileOutputStream(imageFile);
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
                     fos.flush();
                     fos.close();
                     Intent cropIntent = new Intent(RootMenu.this, editImage.class); //intent to move to the crop activity
+                    //getFilesDir().getAbsolutePath() + "/projects/" + name + "/notes/"
+                    cropIntent.putExtra("name", name); //TODO Fix image saved location
                     cropIntent.putExtra("image", imageFile.getAbsolutePath()); //adds the image location to be passed to the crop
                     startActivityForResult(cropIntent, REQ_CODE_CROP);
                 } catch (IOException e) {
