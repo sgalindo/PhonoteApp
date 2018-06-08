@@ -43,6 +43,7 @@ public class ImageToText extends AppCompatActivity {
     private ImageView imageView;
     private Button buttonGetImage;
     private Button buttonProcess;
+    private Button buttonSave;
     private TextView textView;
     private static final int PICK_IMAGE = 100;
     Uri imageUri;
@@ -50,6 +51,8 @@ public class ImageToText extends AppCompatActivity {
 
     public JSONObject jo = null;
     public JSONArray jsonArray = null;
+
+    private StringBuilder stringBuilder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +62,7 @@ public class ImageToText extends AppCompatActivity {
         imageView = (ImageView) findViewById(R.id.image_view_Img2Txt);
         buttonGetImage = (Button)findViewById(R.id.button_pickImage);
         buttonProcess = (Button) findViewById(R.id.button_process);
+        buttonSave = (Button) findViewById(R.id.button_save);
         textView = (TextView) findViewById(R.id.textView_result_Img2Txt);
 
         // Set bitmap image from resources
@@ -123,7 +127,7 @@ public class ImageToText extends AppCompatActivity {
                         } else {
                             Frame frame = new Frame.Builder().setBitmap(bitmap).build();
                             SparseArray<TextBlock> items = textRecognizer.detect(frame);
-                            StringBuilder stringBuilder = new StringBuilder();
+                            stringBuilder = new StringBuilder();
                             for(int i = 0; i < items.size(); i++){
                                 TextBlock item = items.valueAt(i);
                                 stringBuilder.append(item.getValue());
@@ -166,6 +170,13 @@ public class ImageToText extends AppCompatActivity {
                     }
                 }
         );
+
+        buttonSave.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                createNote(rootPath, stringBuilder);
+            }
+        });
 
         buttonGetImage.setOnClickListener(
                 new View.OnClickListener(){
@@ -272,7 +283,7 @@ public class ImageToText extends AppCompatActivity {
     private void createNote(final String rootPath, final StringBuilder stringBuilder){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(ImageToText.this);
-        builder.setTitle("Set Name");
+        builder.setTitle("Save Note With Title:");
 
         final EditText name_input = new EditText(ImageToText.this);
         name_input.setInputType(InputType.TYPE_CLASS_TEXT);
@@ -306,6 +317,7 @@ public class ImageToText extends AppCompatActivity {
                     fo.close();
 
                     Toast.makeText(getApplicationContext(), "Note Saved", Toast.LENGTH_SHORT).show();
+                    finish();
                 }
                 catch (IOException e) {
                     e.printStackTrace();
@@ -318,7 +330,8 @@ public class ImageToText extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
-                Toast.makeText(getApplicationContext(), "Note Not Saved", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Save Canceled", Toast.LENGTH_SHORT).show();
+                buttonSave.setVisibility(View.VISIBLE);
             }
         });
         builder.show();

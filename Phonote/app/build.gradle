@@ -22,7 +22,13 @@ android {
         }
     }
     productFlavors {
+
     }
+      compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+
 }
 
 dependencies {
@@ -35,6 +41,10 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+
     //Google Vision
     api 'com.google.android.gms:play-services-vision:15.0.0'
+
+
+
 }

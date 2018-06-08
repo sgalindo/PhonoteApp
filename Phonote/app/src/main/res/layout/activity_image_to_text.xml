@@ -4,36 +4,80 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/beigeLight"
     tools:context=".ImageToText"
     tools:layout_editor_absoluteY="81dp">
 
-    <Button
-        android:id="@+id/button_pickImage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="8dp"
-        android:text="Pick Image From Gallery"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/button_process"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp"
-        android:text="PROCESS"
-        android:visibility="invisible"
+    <RelativeLayout
+        android:id="@+id/rlTopBar"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:background="@color/beigeGray"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_pickImage" />
+        app:layout_constraintTop_toTopOf="parent">
 
+        <Button
+            android:id="@+id/button_process"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/custom_button1"
+            android:text="Process"
+            android:textColor="@color/beigeBrown"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_pickImage" />
+
+        <Button
+            android:id="@+id/button_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/custom_button1"
+            android:text="Save Note"
+            android:textColor="@color/beigeBrown"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_pickImage" />
+
+        <Button
+            android:id="@+id/button_pickImage"
+            android:layout_width="142dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/custom_button1"
+            android:text="Pick Image From Gallery"
+            android:textColor="@color/beigeBrown"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:text="Text Converter"
+            android:textColor="@color/beigeLight"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/button_process"
+        app:layout_constraintTop_toBottomOf="@+id/rlTopBar"
         tools:layout_editor_absoluteX="0dp">
 
         <LinearLayout
@@ -45,9 +89,9 @@
                 android:id="@+id/textView_result_Img2Txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="16dp"
                 android:text="NO TEXT"
                 android:textSize="12sp"
-                android:layout_margin="16dp"
                 tools:layout_editor_absoluteX="4dp"
                 tools:layout_editor_absoluteY="128dp" />
 

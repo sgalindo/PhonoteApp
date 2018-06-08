@@ -4,9 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -26,11 +24,9 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.graphics.Matrix;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInApi;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
@@ -59,13 +55,14 @@ public class RootMenu extends AppCompatActivity {
     private int REQ_CODE_CROP = 2;
     private Uri HQimageUri; //needed to get high quality image instead of thumbnail
     private File imageFile; //hol
+    private Bundle bundle;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         deleted = false;
         super.onCreate(savedInstanceState);
-        Bundle bundle = getIntent().getExtras();
+        bundle = getIntent().getExtras();
 
         setContentView(R.layout.content_root_menu);
 
@@ -112,10 +109,24 @@ public class RootMenu extends AppCompatActivity {
         });
 
         Button returnToProjects = findViewById(R.id.go_to_projects);
+
         returnToProjects.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("Going to Project menu.", "PASS?");
+
                 finish();
+            }
+        });
+
+        // button to sync files to google docs account
+        Button syncProject = findViewById(R.id.sync_files);
+        syncProject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                 GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(RootMenu.this);
+                DriveFolderManager manager = new DriveFolderManager();
+                manager.sync(RootMenu.this, account);
             }
         });
 
@@ -255,11 +266,14 @@ public class RootMenu extends AppCompatActivity {
                 bitmap = editImage.rotateBitmap(bitmap, 90); //automatically rotates the image 90degrees as I found all images started sideways
 
                 try {
+                    String name = bundle.getString("name");
                     FileOutputStream fos = new FileOutputStream(imageFile);
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
                     fos.flush();
                     fos.close();
                     Intent cropIntent = new Intent(RootMenu.this, editImage.class); //intent to move to the crop activity
+                    //getFilesDir().getAbsolutePath() + "/projects/" + name + "/notes/"
+                    cropIntent.putExtra("name", name); //TODO Fix image saved location
                     cropIntent.putExtra("image", imageFile.getAbsolutePath()); //adds the image location to be passed to the crop
                     startActivityForResult(cropIntent, REQ_CODE_CROP);
                 } catch (IOException e) {
@@ -283,12 +297,18 @@ public class RootMenu extends AppCompatActivity {
             signIn.setVisibility(View.INVISIBLE);
             Button signOut = findViewById(R.id.sign_out_button);
             signOut.setVisibility(View.VISIBLE);
+            Button syncProject = findViewById(R.id.sync_files);
+            syncProject.setEnabled((true));
+            syncProject.setAlpha((float) 1);
         }
         else {
             SignInButton signIn = findViewById(R.id.sign_in_button);
             signIn.setVisibility(View.VISIBLE);
             Button signOut = findViewById(R.id.sign_out_button);
             signOut.setVisibility(View.INVISIBLE);
+            Button syncProject = findViewById(R.id.sync_files);
+            syncProject.setEnabled((false));
+            syncProject.setAlpha((float) .5);
         }
     }
 
@@ -314,6 +334,9 @@ public class RootMenu extends AppCompatActivity {
                 signIn.setVisibility(View.VISIBLE);
                 Button signOut = findViewById(R.id.sign_out_button);
                 signOut.setVisibility(View.INVISIBLE);
+                Button syncProject = findViewById(R.id.sync_files);
+                syncProject.setEnabled((false));
+                syncProject.setAlpha((float) .5);
             }
         });
     }

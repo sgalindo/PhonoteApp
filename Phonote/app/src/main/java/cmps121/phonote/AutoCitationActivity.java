@@ -1,5 +1,6 @@
 package cmps121.phonote;
 
+import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +16,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.webkit.ConsoleMessage;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -77,38 +80,47 @@ public class AutoCitationActivity extends AppCompatActivity implements ActivityC
         auto_source.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 EditText searchTitle = (EditText) findViewById(R.id.search_title_editText);
-                String searchString = searchTitle.getText().toString();
-                Scanner sc = new Scanner(searchString);
-                StringBuilder temp = new StringBuilder();
-                while (sc.hasNext()) {
-                    temp.append(sc.next());
-                    if (sc.hasNext()) {
-                        temp.append("+");
+                String searchString = searchTitle.getText().toString().trim();
+                if (!searchString.equals("")) {
+                    Scanner sc = new Scanner(searchString);
+                    StringBuilder temp = new StringBuilder();
+                    while (sc.hasNext()) {
+                        temp.append(sc.next());
+                        if (sc.hasNext()) {
+                            temp.append("+");
+                        }
                     }
+                    BIB_URL += temp.toString();
+                    Log.d(LOG_TAG, BIB_URL);
+                    webView.loadUrl(BIB_URL);
+                    auto_source.setVisibility(View.GONE);
+                    manual_source.setVisibility(View.GONE);
+                    auto_prompt_text.setVisibility(View.GONE);
+                    manual_prompt_text.setVisibility(View.GONE);
+                    search_title.setVisibility(View.GONE);
+
+                    genView.setVisibility(View.VISIBLE);
+                    spinner.setVisibility(View.VISIBLE);
+
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
                 }
-                BIB_URL += temp.toString();
-                Log.d(LOG_TAG, BIB_URL);
-                webView.loadUrl(BIB_URL);
-                auto_source.setVisibility(View.GONE);
-                manual_source.setVisibility(View.GONE);
-                auto_prompt_text.setVisibility(View.GONE);
-                manual_prompt_text.setVisibility(View.GONE);
-                search_title.setVisibility(View.GONE);
-
-                genView.setVisibility(View.VISIBLE);
-                spinner.setVisibility(View.VISIBLE);
-
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-
+                else {
+                    Context context = getApplicationContext();
+                    CharSequence text = "Enter a title";
+                    int duration = Toast.LENGTH_LONG;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                }
             }
         });
 
         manual_source.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sent = true;
                 Intent createSourceIntent = new Intent(AutoCitationActivity.this, CreateSourceActivity.class);
                 createSourceIntent.putExtra("name", name);
                 createSourceIntent.putExtra("title", "");
@@ -121,18 +133,29 @@ public class AutoCitationActivity extends AppCompatActivity implements ActivityC
             }
         });
 
-        webView.setWebViewClient(new WebViewClient() {
+        webView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+                Log.d("JS", consoleMessage.message());
+                return true;
+            }
+        });
 
+        webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
+                Log.d(LOG_TAG, "Page finished loading");
                 view.loadUrl("");
                 String javascript = "(function() {" +
                         "var x = document.querySelector('#search-results > div > div > div.col-md-4.col-xs-3 > form > input[name=item_json]').value;" +
-                        "return x;" +
+                        "if (x != null) return x;" +
+                        "else return '-1';" +
                         "})()";
+                Log.d(LOG_TAG, "Injecting JavaScript");
                 view.evaluateJavascript(javascript, new ValueCallback<String>() {
                     @Override
                     public void onReceiveValue(String value) {
+                        Log.d(LOG_TAG, "Value received: " + value);
                         if (!retrieved && !sent) {
                             try {
                                 value = value.substring(value.indexOf('{'), value.lastIndexOf('}') + 1);
@@ -191,6 +214,7 @@ public class AutoCitationActivity extends AppCompatActivity implements ActivityC
                                 createSourceIntent.putExtra("city", "");
                                 createSourceIntent.putExtra("year", "");
                             }
+                            destroyWebView();
                             sent = true;
                             startActivity(createSourceIntent);
                             finish();
@@ -203,6 +227,29 @@ public class AutoCitationActivity extends AppCompatActivity implements ActivityC
 
     @Override
     public void onBackPressed() {
+        destroyWebView();
         finish();
+    }
+
+    public void destroyWebView() {
+
+        webView.removeAllViews();
+
+        webView.clearHistory();
+
+        webView.clearCache(true);
+
+        webView.loadUrl("about:blank");
+
+        webView.onPause();
+        webView.removeAllViews();
+        webView.destroyDrawingCache();
+
+        webView.pauseTimers();
+
+        webView.destroy();
+
+        webView = null;
+        Log.d(LOG_TAG, "WebView destroyed.");
     }
 }
