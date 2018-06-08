@@ -57,7 +57,7 @@ public class editImage extends AppCompatActivity {
     private boolean hasCropBeenUpdated = false;
     private AlertDialog.Builder builder;
     private Display display;
-
+    private String projectName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +66,7 @@ public class editImage extends AppCompatActivity {
         frameLayout = findViewById(R.id.frameLayout);
 
         picLoc = getIntent().getStringExtra("image");
+        projectName = getIntent().getStringExtra("name");
         bmp = BitmapFactory.decodeFile(picLoc);
 
         imageView.setImageBitmap(bmp);
@@ -128,7 +129,9 @@ public class editImage extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), ImageToText.class);
                 intent.putExtra("methodName","textFromEditImage");
                 intent.putExtra("pictureLocation", picLoc);
+                intent.putExtra("name",projectName);
                 startActivity(intent);
+                finish();
                 dialog.dismiss();
 
             }
