@@ -16,6 +16,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.webkit.ConsoleMessage;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -140,14 +142,14 @@ public class AutoCitationActivity extends AppCompatActivity implements ActivityC
         });
 
         webView.setWebViewClient(new WebViewClient() {
-
             @Override
             public void onPageFinished(WebView view, String url) {
                 Log.d(LOG_TAG, "Page finished loading");
                 view.loadUrl("");
                 String javascript = "(function() {" +
                         "var x = document.querySelector('#search-results > div > div > div.col-md-4.col-xs-3 > form > input[name=item_json]').value;" +
-                        "return x;" +
+                        "if (x != null) return x;" +
+                        "else return '-1';" +
                         "})()";
                 Log.d(LOG_TAG, "Injecting JavaScript");
                 view.evaluateJavascript(javascript, new ValueCallback<String>() {
@@ -231,32 +233,22 @@ public class AutoCitationActivity extends AppCompatActivity implements ActivityC
 
     public void destroyWebView() {
 
-        // Make sure you remove the WebView from its parent view before doing anything.
         webView.removeAllViews();
 
         webView.clearHistory();
 
-        // NOTE: clears RAM cache, if you pass true, it will also clear the disk cache.
-        // Probably not a great idea to pass true if you have other WebViews still alive.
         webView.clearCache(true);
 
-        // Loading a blank page is optional, but will ensure that the WebView isn't doing anything when you destroy it.
         webView.loadUrl("about:blank");
 
         webView.onPause();
         webView.removeAllViews();
         webView.destroyDrawingCache();
 
-        // NOTE: This pauses JavaScript execution for ALL WebViews,
-        // do not use if you have other WebViews still alive.
-        // If you create another WebView after calling this,
-        // make sure to call mWebView.resumeTimers().
         webView.pauseTimers();
 
-        // NOTE: This can occasionally cause a segfault below API 17 (4.2)
         webView.destroy();
 
-        // Null out the reference so that you don't end up re-using it.
         webView = null;
         Log.d(LOG_TAG, "WebView destroyed.");
     }
