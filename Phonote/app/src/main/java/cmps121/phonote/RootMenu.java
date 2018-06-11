@@ -103,7 +103,7 @@ public class RootMenu extends AppCompatActivity {
             public void onClick(View v) {
                 Intent sourceListIntent = new Intent(RootMenu.this,
                         SourceListActivity.class);
-                sourceListIntent.putExtra("name", finalName);
+                sourceListIntent.putExtra("name", fileName);
                 startActivity(sourceListIntent);
             }
         });
